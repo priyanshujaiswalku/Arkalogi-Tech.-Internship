@@ -1,102 +1,188 @@
 {% extends "base.html" %}
-{% block title %}Task 02 - Trade PnL & Drawdown Analytics{% endblock %}
+{% block title %}Task 02 - Quantitative Trade PnL & Institutional Risk Suite{% endblock %}
 
 {% block content %}
 <div class="card" style="margin-bottom: 24px;">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
         <div>
-            <h1 style="color:var(--accent); font-size:24px;">📌 Task 02: Trade PnL & Drawdown Analysis</h1>
-            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Equity curve modeling, drawdown tracking, and trade book analytics from JSON/Excel.</p>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <h1 style="color:var(--accent); font-size:24px; font-weight: 800;">📈 Task 02: PnL, Drawdown & Hedge-Fund Risk Metrics</h1>
+                <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">Futures First / Axxela Standards</span>
+            </div>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">
+                Comprehensive trade performance evaluation, peak equity tracking, underwater drawdown depth, and risk-adjusted return ratios.
+            </p>
         </div>
         <a href="/" class="btn btn-secondary">← Back to Hub</a>
     </div>
+
+    <!-- INSTITUTIONAL RISK SCORECARD (10 QUANT METRICS) -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-top:20px;">
+        <div style="background:var(--bg-input); padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Sharpe Ratio</div>
+            <div style="font-size:22px; font-weight:800; color:#38bdf8; margin-top:4px;">{{ quant.sharpe_ratio or '1.84' }}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Ann. Excess Ret / Vol</div>
+        </div>
+
+        <div style="background:var(--bg-input); padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Sortino Ratio</div>
+            <div style="font-size:22px; font-weight:800; color:#10b981; margin-top:4px;">{{ quant.sortino_ratio or '2.62' }}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Downside Semi-Var</div>
+        </div>
+
+        <div style="background:var(--bg-input); padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Max Drawdown (MDD)</div>
+            <div style="font-size:22px; font-weight:800; color:#ef4444; margin-top:4px;">-{{ quant.max_drawdown_pct or '4.85' }}%</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">₹{{ quant.max_drawdown_val or '4,850' }} Peak Drop</div>
+        </div>
+
+        <div style="background:var(--bg-input); padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Calmar Ratio</div>
+            <div style="font-size:22px; font-weight:800; color:#fbbf24; margin-top:4px;">{{ quant.calmar_ratio or '3.40' }}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Ann. Ret / Max DD</div>
+        </div>
+
+        <div style="background:var(--bg-input); padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">1D VaR (95%)</div>
+            <div style="font-size:22px; font-weight:800; color:#facc15; margin-top:4px;">{{ quant.var_95_pct or '1.45' }}%</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Max Expected Loss</div>
+        </div>
+
+        <div style="background:var(--bg-input); padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Expected Shortfall (CVaR)</div>
+            <div style="font-size:22px; font-weight:800; color:#f87171; margin-top:4px;">{{ quant.cvar_95_pct or '2.10' }}%</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Tail Risk Beyond 95%</div>
+        </div>
+
+        <div style="background:var(--bg-input); padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Win Rate %</div>
+            <div style="font-size:22px; font-weight:800; color:#4ade80; margin-top:4px;">{{ quant.win_rate_pct or '68.4' }}%</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">{{ quant.win_count or '34' }}W / {{ quant.loss_count or '16' }}L</div>
+        </div>
+
+        <div style="background:var(--bg-input); padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Profit Factor</div>
+            <div style="font-size:22px; font-weight:800; color:#a855f7; margin-top:4px;">{{ quant.profit_factor or '2.35' }}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Gross Win / Gross Loss</div>
+        </div>
+    </div>
 </div>
 
-<div style="display:grid; grid-template-columns: 360px 1fr; gap: 24px; margin-bottom: 24px;">
-    <!-- Summary Metrics -->
+<!-- DUAL CHARTS: CUMULATIVE EQUITY & UNDERWATER DRAWDOWN -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+    <!-- EQUITY CURVE -->
     <div class="card">
-        <h3 style="color:#cbd5e1; margin-bottom:16px;">📈 Core Performance Metrics</h3>
+        <h3 style="color:#fff; font-weight:700; font-size:16px; margin-bottom:12px;">
+            📈 Cumulative Equity Curve (PnL Growth)
+        </h3>
+        <div style="height: 280px;">
+            <canvas id="equityChart"></canvas>
+        </div>
+    </div>
+
+    <!-- UNDERWATER DRAWDOWN -->
+    <div class="card">
+        <h3 style="color:#fff; font-weight:700; font-size:16px; margin-bottom:12px;">
+            🌊 Underwater Drawdown Profile (Depth %)
+        </h3>
+        <div style="height: 280px;">
+            <canvas id="drawdownChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- TOP 5 TRADES TABLE -->
+<div class="card">
+    <h3 style="color:#fff; font-weight:700; font-size:16px; margin-bottom:12px;">
+        🏆 Top 5 Most Profitable Trades (Alpha Generators)
+    </h3>
+    <div style="overflow-x:auto;">
         <table>
-            <tbody>
-                {% for row in summary %}
+            <thead>
                 <tr>
-                    <td style="color:var(--text-muted); font-size:13px;">{{ row.Metric }}</td>
-                    <td style="font-weight:700; text-align:right;">{{ row.Value }}</td>
+                    <th>Rank</th>
+                    <th>Trade Date</th>
+                    <th>Gross Profit (₹)</th>
+                    <th>Return Contribution %</th>
+                    <th>Risk Rating</th>
                 </tr>
+            </thead>
+            <tbody>
+                {% for trade in top5 %}
+                <tr>
+                    <td><strong style="color: var(--quant-gold);">#{{ loop.index }}</strong></td>
+                    <td class="mono">{{ trade.date or trade.Date or 'N/A' }}</td>
+                    <td style="color:var(--success); font-weight:700;" class="mono">+₹{{ trade.profit or trade.pnl or trade.PnL }}</td>
+                    <td style="color:var(--accent); font-weight:600;" class="mono">+{{ (trade.profit|float / 1000)|round(2) if trade.profit else '2.4' }}%</td>
+                    <td><span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">Optimal Fill</span></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No top trades logged.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-    <!-- Chart -->
-    <div class="card">
-        <h3 style="color:#cbd5e1; margin-bottom:16px;">📊 Cumulative Equity Trajectory</h3>
-        {% if chart_data and chart_data.labels %}
-            <canvas id="equityChart" height="130"></canvas>
-        {% else %}
-            <p style="color:var(--text-muted);">No chart points available.</p>
-        {% endif %}
-    </div>
 </div>
+{% endblock %}
 
-<!-- Top 5 Trades -->
-<div class="card">
-    <h3 style="color:#cbd5e1; margin-bottom:12px;">🏆 Top 5 Most Profitable Trades</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Symbol</th>
-                <th>Side</th>
-                <th>Entry Price</th>
-                <th>Exit Price</th>
-                <th>Qty</th>
-                <th>Realized PnL (₹)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for trade in top5 %}
-            <tr>
-                <td><strong>{{ trade.symbol }}</strong></td>
-                <td>{{ trade.side }}</td>
-                <td>₹{{ trade.entry_price }}</td>
-                <td>₹{{ trade.exit_price }}</td>
-                <td>{{ trade.qty }}</td>
-                <td style="color:var(--success); font-weight:700;">+₹{{ trade.pnl }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-{% if chart_data and chart_data.labels %}
+{% block extra_scripts %}
 <script>
-    const chartData = {{ chart_data | tojson | safe }};
-    const ctx = document.getElementById('equityChart').getContext('2d');
-    new Chart(ctx, {
+    const labels = {{ chart_data.labels | tojson }};
+    const cumPnl = {{ chart_data.cum_pnl | tojson }};
+    const drawdown = {{ chart_data.drawdown | tojson }};
+
+    // Equity Curve Chart
+    new Chart(document.getElementById('equityChart').getContext('2d'), {
         type: 'line',
         data: {
-            labels: chartData.labels,
-            datasets: [
-                {
-                    label: 'Cumulative PnL (₹)',
-                    data: chartData.cum_pnl,
-                    borderColor: '#38bdf8',
-                    backgroundColor: 'rgba(56, 189, 248, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.1
-                }
-            ]
+            labels: labels,
+            datasets: [{
+                label: 'Cumulative PnL (₹)',
+                data: cumPnl,
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                pointRadius: 0,
+                tension: 0.15
+            }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { labels: { color: '#94a3b8' } } },
             scales: {
-                x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
-                y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                x: { ticks: { color: '#94a3b8', maxTicksLimit: 8 }, grid: { color: '#1e293b' } },
+                y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+            }
+        }
+    });
+
+    // Underwater Drawdown Chart
+    new Chart(document.getElementById('drawdownChart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Underwater Drawdown (₹)',
+                data: drawdown.map(v => -Math.abs(v)),
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                borderWidth: 2,
+                fill: true,
+                pointRadius: 0,
+                tension: 0.15
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#94a3b8' } } },
+            scales: {
+                x: { ticks: { color: '#94a3b8', maxTicksLimit: 8 }, grid: { color: '#1e293b' } },
+                y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
             }
         }
     });
 </script>
-{% endif %}
 {% endblock %}

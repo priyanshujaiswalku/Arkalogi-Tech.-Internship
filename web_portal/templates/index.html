@@ -1,153 +1,220 @@
 {% extends "base.html" %}
 
-{% block title %}Arkalogi Internship Portal - Priyanshu Kumar{% endblock %}
+{% block title %}Arkalogi Institutional Quant & Algorithmic Trading Suite - Priyanshu Kumar{% endblock %}
 
 {% block content %}
-<style>
-    .hero-section { text-align: center; padding: 30px 0 40px; }
-    .hero-title { font-size: 34px; font-weight: 800; color: #fff; margin-bottom: 12px; }
-    .hero-desc { font-size: 16px; color: var(--text-muted); max-width: 800px; margin: 0 auto 30px; line-height: 1.6; }
+<!-- HERO SECTION -->
+<div style="margin-bottom: 32px; text-align: center; padding: 28px 20px; background: linear-gradient(180deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%); border-radius: 16px; border: 1px solid rgba(56, 189, 248, 0.15); position: relative; overflow: hidden;">
+    <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 700; color: #38bdf8; margin-bottom: 14px;">
+        <span>🎯 TARGET EVALUATION: FUTURES FIRST &bull; AXXELA &bull; ALPHAGREP &bull; PROP TRADING</span>
+    </div>
     
-    .indices-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
-    .index-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; display: flex; justify-content: space-between; align-items: center; }
-    .index-stat-name { font-size: 13px; color: var(--text-muted); font-weight: 600; }
-    .index-stat-price { font-size: 20px; font-weight: 700; color: #fff; margin-top: 4px; }
-    .index-pill { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; }
-    .pill-green { background: rgba(74, 222, 128, 0.15); color: var(--success); }
-    .pill-red { background: rgba(248, 113, 113, 0.15); color: var(--danger); }
-
-    .tasks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
-    .task-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, border-color 0.2s; }
-    .task-card:hover { transform: translateY(-4px); border-color: var(--accent); }
-    .task-badge { display: inline-block; padding: 4px 10px; background: rgba(56, 189, 248, 0.1); color: var(--accent); border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
-    .task-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-    .task-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
-    .task-tech { font-size: 12px; color: #64748b; margin-bottom: 16px; }
-</style>
-
-<div class="hero-section">
-    <h1 class="hero-title">💼 Arkalogi Backend & AI-ML Internship</h1>
-    <p class="hero-desc">
-        Welcome to my interactive internship portfolio. Below is the complete showcase of all 9 assigned quantitative analysis, financial engineering, machine learning, and backend architecture tasks.
+    <h1 style="font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 10px;">
+        Quantitative Trading, Derivatives Pricing & Risk Engine
+    </h1>
+    <p style="color: var(--text-muted); font-size: 15px; max-width: 780px; margin: 0 auto 20px; line-height: 1.6;">
+        Engineered by <strong>Priyanshu Kumar</strong> during the Arkalogi Engineering Internship. High-performance Python backend integrating Black-Scholes Greeks, Drawdown attribution, Intraday 1-min simulation with Indian exchange friction, and Machine Learning alpha forecasting.
     </p>
+
+    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+        <a href="/quant" class="btn btn-quant" style="font-size: 14px; padding: 12px 24px;">
+            ⚡ Launch Institutional Quant Suite (Task 10)
+        </a>
+        <a href="/task07" class="btn btn-primary" style="font-size: 14px; padding: 12px 24px;">
+            📊 Intraday Trade Simulator (Task 07)
+        </a>
+        <a href="/task02" class="btn btn-secondary" style="font-size: 14px; padding: 12px 24px;">
+            🛡️ Risk & Drawdown Analytics (Task 02)
+        </a>
+    </div>
 </div>
 
-<!-- Benchmark Market Bar -->
-{% if indices %}
-<div class="indices-grid">
+<!-- LIVE MARKET INDICES ROW -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 28px;">
     {% for idx in indices %}
-    <div class="index-stat">
-        <div>
-            <div class="index-stat-name">{{ idx.name }}</div>
-            <div class="index-stat-price">₹{{ idx.price }}</div>
+    <div class="card" style="padding: 16px 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);">{{ idx.name }}</span>
+            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-size: 11px;">LIVE BENCHMARK</span>
         </div>
-        <div class="index-pill {{ 'pill-green' if idx.change_pct >= 0 else 'pill-red' }}">
-            {{ '+' if idx.change_pct > 0 }}{{ idx.change_pct }}%
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px;">
+            <span style="font-size: 24px; font-weight: 800; color: #fff;">{{ idx.value }}</span>
+            <span style="font-size: 13px; font-weight: 700; color: {% if '-' in idx.change %}#ef4444{% else %}#10b981{% endif %};">
+                {{ idx.change }}
+            </span>
         </div>
     </div>
     {% endfor %}
 </div>
-{% endif %}
 
-<!-- Tasks Matrix Grid -->
-<div class="tasks-grid">
-    <!-- Task 01 -->
-    <div class="task-card">
+<!-- PROP DESK SKILLS & EVALUATION MATRIX -->
+<div class="card" style="margin-bottom: 32px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(251, 191, 36, 0.2);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
         <div>
-            <span class="task-badge">Task 01</span>
-            <h3 class="task-title">📌 Option Symbol Filtering</h3>
-            <p class="task-desc">Filters Zerodha master instrument CSV for NIFTY50 options/futures using handcrafted string slicing (No Regex constraint).</p>
-            <div class="task-tech"><strong>Tech:</strong> Python, Pandas, Handcrafted String Slicing</div>
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--quant-gold); display: flex; align-items: center; gap: 8px;">
+                <span>⚡</span> Prop Desk Competencies Matrix (Futures First / Axxela / AlphaGrep)
+            </h3>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 2px;">
+                How each module maps directly to quantitative research, derivatives market making, and algorithmic trading desks:
+            </p>
         </div>
-        <a href="/task01" class="btn btn-primary">Open Task 01 Module →</a>
+        <span class="badge" style="background: rgba(251, 191, 36, 0.15); color: var(--quant-gold); font-weight: 700;">
+            100% Automated Backend
+        </span>
     </div>
 
-    <!-- Task 02 -->
-    <div class="task-card">
-        <div>
-            <span class="task-badge">Task 02</span>
-            <h3 class="task-title">📌 Trade PnL & Drawdown Analysis</h3>
-            <p class="task-desc">Evaluates trade books from JSON/Excel, computes long/short PnL, equity peak, drawdowns, and top 5 profitable trades.</p>
-            <div class="task-tech"><strong>Tech:</strong> Python, Pandas, Cumulative Peak/Drawdown Analytics</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+        <div style="background: rgba(8, 12, 20, 0.6); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 4px;">1. DERIVATIVES & GREEKS PRICING</div>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                Black-Scholes analytical $\Delta, \Gamma, \Theta, \mathcal{V}, \rho$ computation, Newton-Raphson IV root-finding, and Multi-leg payoff matrix generation.
+            </p>
         </div>
-        <a href="/task02" class="btn btn-primary">Open Task 02 Module →</a>
+
+        <div style="background: rgba(8, 12, 20, 0.6); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 12px; font-weight: 700; color: #10b981; margin-bottom: 4px;">2. RISK METRICS & DRAWDOWN</div>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                Sharpe Ratio, Sortino Ratio, Calmar Ratio, Parametric/Historical VaR (95%/99%), Conditional VaR (Expected Shortfall), and Kelly position sizing.
+            </p>
+        </div>
+
+        <div style="background: rgba(8, 12, 20, 0.6); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 12px; font-weight: 700; color: #a855f7; margin-bottom: 4px;">3. QUANT ALPHA & ML MODELS</div>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                Machine Learning regression for PnL % prediction using Support/Resistance geometry, time-of-day seasonality, and feature attribution.
+            </p>
+        </div>
+
+        <div style="background: rgba(8, 12, 20, 0.6); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 12px; font-weight: 700; color: #f59e0b; margin-bottom: 4px;">4. INTRADAY EXECUTION & FRICTION</div>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                1-minute candlestick backtester with realistic NSE/BSE transaction taxes (STT, Exchange fee, SEBI fee, GST) + customizable slippage (bps).
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- TASK DIRECTORY GRID (TASKS 01 - 10) -->
+<h2 style="font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+    <span>📁</span> Complete Tasks & Modules Directory (10 Specialized Systems)
+</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px;">
+    <!-- TASK 10 (NEW HIGHLIGHT) -->
+    <div class="card" style="border: 1.5px solid rgba(251, 191, 36, 0.4); background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(251, 191, 36, 0.2); color: var(--quant-gold); font-weight: 800;">TASK 10 (PRO ADVANCED)</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Greeks & Strategy Engine</span>
+        </div>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">Institutional Quant & Options Suite</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            Live Black-Scholes Greeks sandbox (&Delta;, &Gamma;, &Theta;, &nu;), multi-leg strategy payoff visualizer (Iron Condor, Straddle), and Kelly risk sandbox.
+        </p>
+        <a href="/quant" class="btn btn-quant" style="width: 100%;">⚡ Open Quant Desk Suite &rarr;</a>
     </div>
 
-    <!-- Task 03 -->
-    <div class="task-card">
-        <div>
-            <span class="task-badge">Task 03</span>
-            <h3 class="task-title">📌 ML PnL % Prediction</h3>
-            <p class="task-desc">Supervised ML regression predicting expected trade returns from support/resistance distances and time-of-day features.</p>
-            <div class="task-tech"><strong>Tech:</strong> Scikit-Learn, Random Forest, Regression Metrics</div>
+    <!-- TASK 01 -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">TASK 01</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Derivatives</span>
         </div>
-        <a href="/task03" class="btn btn-primary">Open Task 03 Module →</a>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">Option Filtering & Greeks Chain</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            High-speed handcrafted date extraction across 38,349+ NIFTY 50 contracts enriched with Black-Scholes analytical Delta, Gamma, Theta and Moneyness.
+        </p>
+        <a href="/task01" class="btn btn-secondary" style="width: 100%;">Inspect Greeks Chain &rarr;</a>
     </div>
 
-    <!-- Task 04 -->
-    <div class="task-card">
-        <div>
-            <span class="task-badge">Task 04</span>
-            <h3 class="task-title">📌 CSV to Python Dict Converter</h3>
-            <p class="task-desc">Converts CSV datasets into structured nested Python dictionaries with single-key indexing and hierarchical trees.</p>
-            <div class="task-tech"><strong>Tech:</strong> Python, CSV DictReader, JSON Serialization</div>
+    <!-- TASK 02 -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">TASK 02</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Risk Analytics</span>
         </div>
-        <a href="/task04" class="btn btn-primary">Open Task 04 Module →</a>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">Trade PnL & Hedge-Fund Risk Suite</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            Sharpe Ratio, Sortino Ratio, Calmar Ratio, 95% Value-at-Risk (VaR), CVaR Expected Shortfall, and dual-axis equity/drawdown curves.
+        </p>
+        <a href="/task02" class="btn btn-secondary" style="width: 100%;">View Risk Analytics &rarr;</a>
     </div>
 
-    <!-- Task 05 -->
-    <div class="task-card">
-        <div>
-            <span class="task-badge">Task 05</span>
-            <h3 class="task-title">📌 Market Insight (SMA API)</h3>
-            <p class="task-desc">Scans NIFTY50 equities against rolling SMA windows, categorizing stocks into Above SMA vs Below SMA cohorts.</p>
-            <div class="task-tech"><strong>Tech:</strong> Flask, Pandas, Rolling SMA, REST API</div>
+    <!-- TASK 03 -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">TASK 03</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Machine Learning</span>
         </div>
-        <a href="/task05" class="btn btn-primary">Open Task 05 Module →</a>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">ML PnL Alpha Predictor & Kelly Sizing</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            Machine Learning regression models predicting trade return % with Support/Resistance distance features and Kelly capital allocation advice.
+        </p>
+        <a href="/task03" class="btn btn-secondary" style="width: 100%;">Run ML Predictor &rarr;</a>
     </div>
 
-    <!-- Task 06 -->
-    <div class="task-card">
-        <div>
-            <span class="task-badge">Task 06</span>
-            <h3 class="task-title">📌 Service Selection Web App</h3>
-            <p class="task-desc">Dynamic multi-page web application architecture utilizing modular Flask Blueprints and clean service discovery.</p>
-            <div class="task-tech"><strong>Tech:</strong> Flask Blueprints, Dynamic Routing, Jinja2</div>
+    <!-- TASK 07 -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">TASK 07</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Backtester</span>
         </div>
-        <a href="/services" class="btn btn-primary">Open Task 06 Module →</a>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">Intraday Simulator & Friction Model</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            1-minute candlestick range backtesting with realistic Indian statutory charges (STT, Exchange, SEBI, GST) and institutional slippage drag.
+        </p>
+        <a href="/task07" class="btn btn-secondary" style="width: 100%;">Launch Trade Simulator &rarr;</a>
     </div>
 
-    <!-- Task 07 -->
-    <div class="task-card">
-        <div>
-            <span class="task-badge">Task 07</span>
-            <h3 class="task-title">📌 Trade Entry/Exit Simulator</h3>
-            <p class="task-desc">Intraday trade backtester over 1-minute historical candlestick data with dynamic date range execution and Chart.js visualization.</p>
-            <div class="task-tech"><strong>Tech:</strong> Flask, Pandas, Chart.js, 1-Min Data Resampling</div>
+    <!-- TASK 08 -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">TASK 08</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Technical Alpha</span>
         </div>
-        <a href="/task07" class="btn btn-primary">Open Task 07 Module →</a>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">Multi-Indicator Strategy Recommendation</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            Algorithmic consensus strategy engine incorporating SMA, EMA, RSI (14), and Stochastic RSI for automated BUY / SELL / HOLD execution.
+        </p>
+        <a href="/task08" class="btn btn-secondary" style="width: 100%;">Open Strategy Dashboard &rarr;</a>
     </div>
 
-    <!-- Task 08 -->
-    <div class="task-card">
-        <div>
-            <span class="task-badge">Task 08</span>
-            <h3 class="task-title">📌 Strategy Recommendation Dashboard</h3>
-            <p class="task-desc">Multi-indicator technical dashboard (SMA, EMA, RSI, StochRSI) with automated Buy/Sell/Hold confidence scoring & live index feed.</p>
-            <div class="task-tech"><strong>Tech:</strong> Flask, Chart.js, Custom Indicator Engines</div>
+    <!-- TASK 05 -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">TASK 05</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Market Scanner</span>
         </div>
-        <a href="/task08" class="btn btn-primary">Open Task 08 Module →</a>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">Rolling SMA Market Insight Scanner</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            Dynamic rolling Simple Moving Average scanner evaluating real-time trends across top NIFTY 50 blue chips with automated REST endpoint.
+        </p>
+        <a href="/task05" class="btn btn-secondary" style="width: 100%;">Scan Market Trends &rarr;</a>
     </div>
 
-    <!-- Task 09 -->
-    <div class="task-card">
-        <div>
-            <span class="task-badge">Task 09</span>
-            <h3 class="task-title">📌 API Validation & Security</h3>
-            <p class="task-desc">Defensive API payload sanitization and constraint checking using Pydantic BaseModels with unit test verification.</p>
-            <div class="task-tech"><strong>Tech:</strong> Pydantic v2, Custom Validators, Type Safety</div>
+    <!-- TASK 09 -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">TASK 09</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Type Safety</span>
         </div>
-        <a href="/task09" class="btn btn-primary">Open Task 09 Module →</a>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">Pydantic v2 Type Defense Sandbox</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            Strict API schema validation, time format enforcement, and defensive boundary checking for algorithmic trade order routing.
+        </p>
+        <a href="/task09" class="btn btn-secondary" style="width: 100%;">Test API Validator &rarr;</a>
+    </div>
+
+    <!-- TASK 04 -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8;">TASK 04</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Data Engine</span>
+        </div>
+        <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px;">Relational CSV to Dict Converter</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+            Fast $O(N)$ streaming converter transforming flat relational records into hierarchical, schema-typed Python dictionaries and JSON trees.
+        </p>
+        <a href="/task04" class="btn btn-secondary" style="width: 100%;">Inspect Converter &rarr;</a>
     </div>
 </div>
 {% endblock %}

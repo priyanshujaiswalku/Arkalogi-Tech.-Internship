@@ -1,13 +1,15 @@
 """
-Arkalogi Internship - Master Task Runner & Verification Suite
+Arkalogi Quantitative Internship - Master Task Runner & Verification Suite
+Engineered for Institutional Prop Trading Evaluation (Futures First / Axxela / AlphaGrep)
 Priyanshu Kumar
 
-Runs and verifies all individual task scripts sequentially:
-- Task 01: Option Symbol Filtering
-- Task 02: Trade PnL & Drawdown Analysis
-- Task 03: ML-Based PnL Percentage Prediction
+Runs and verifies all individual task modules sequentially:
+- Task 01: Option Symbol Filtering & Greeks Chain
+- Task 02: Trade PnL & Hedge-Fund Risk Metrics
+- Task 03: ML-Based PnL Percentage Prediction & Sizing
 - Task 04: CSV to Python Dictionary Converter
 - Task 09: Pydantic Validation Unit Tests
+- Task 10: Institutional Quant & Options Greeks Engine
 """
 
 import os
@@ -26,12 +28,14 @@ TASK_SCRIPTS = [
     ('Task 03: ML PnL Prediction', os.path.join(ROOT_DIR, 'Task_03_ML_PnL_Prediction', 'ml_pnl_prediction.py')),
     ('Task 04: CSV to Dict Converter', os.path.join(ROOT_DIR, 'Task_04_CSV_Dict_Converter', 'csv_to_dict_converter.py')),
     ('Task 09: Pydantic Validation Tests', os.path.join(ROOT_DIR, 'Task_09_API_Validation_Pydantic', 'test_validation.py')),
+    ('Task 10: Quant & Options Greeks Engine', os.path.join(ROOT_DIR, 'Task_10_Quant_Risk_Greeks', 'quant_engine_cli.py')),
 ]
 
 
 def run_all():
     print("=" * 75)
-    print(" 🚀 ARKALOGI INTERNSHIP: RUNNING ALL VERIFICATION TASKS")
+    print(" 🚀 ARKALOI QUANT INTERNSHIP: RUNNING ALL VERIFICATION TASKS")
+    print(" 🎯 Benchmark: Futures First / Axxela / AlphaGrep Standards")
     print("=" * 75)
 
     passed = 0

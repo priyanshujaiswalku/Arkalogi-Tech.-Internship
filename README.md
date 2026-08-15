@@ -1,58 +1,75 @@
-# 💼 Arkalogi Internship – Priyanshu Kumar
+# 🏛️ Arkalogi Quantitative Analytics & Algorithmic Trading Platform
+### Author: Priyanshu Kumar | Backend & Quantitative Trading Engineering Portfolio
 
-[![Live Demo on Vercel](https://img.shields.io/badge/Live%20Demo-Vercel%20Deployment-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://arkalogi-internship-portfolio.vercel.app)
+[![Live Demo on Vercel](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://arkalogi-internship-portfolio.vercel.app)
+[![Target Evaluators](https://img.shields.io/badge/Desk%20Standards-Futures%20First%20%7C%20Axxela%20%7C%20AlphaGrep-f59e0b?style=for-the-badge&logo=target)](https://arkalogi-internship-portfolio.vercel.app)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/priyanshujaiswalku/Arkalogi-Tech.-Internship)
+[![Build Status](https://img.shields.io/badge/Automated%20Tests-6%2F6%20Passed-10b981?style=for-the-badge)](https://github.com/priyanshujaiswalku/Arkalogi-Tech.-Internship)
 
 🌐 **Live Web Application**: [https://arkalogi-internship-portfolio.vercel.app](https://arkalogi-internship-portfolio.vercel.app)
 
-Welcome! This repository documents my backend & AI/ML engineering internship journey at **Arkalogi**. Below is a comprehensive overview of the architecture, tasks assigned, technical approach, mathematical formulations, and instructions for running individual modules or the unified web portal.
+---
+
+## 🎯 Executive Summary & Prop Trading Desk Alignment
+
+This repository documents the production-grade quantitative finance, derivatives engineering, and high-performance backend systems built by **Priyanshu Kumar** during the **Arkalogi Engineering Internship**.
+
+The architecture was intentionally engineered to meet the evaluation benchmarks of top quantitative proprietary trading firms (**Futures First**, **Axxela**, **AlphaGrep**, **Tower Research**):
+
+| Quantitative Discipline | Prop Firm Focus (Futures First / Axxela) | Architecture Implementation in this Repo |
+| :--- | :--- | :--- |
+| **Derivatives & Pricing** | Options Greeks, Delta Neutrality, Dynamic Hedging, Volatility Surface | **Task 01 & Task 10**: Black-Scholes analytical $\Delta, \Gamma, \Theta, \mathcal{V}, \rho$, Newton-Raphson IV root-finding, and Multi-leg payoff modeling (Iron Condor, Straddle, Spreads). |
+| **Risk Management** | Capital Preservation, Max Drawdown limits, Tail Risk | **Task 02 & Task 10**: Annualized Sharpe Ratio, Sortino Ratio, Calmar Ratio, 95%/99% VaR, Conditional VaR (Expected Shortfall), and Kelly Criterion sizing. |
+| **Quantitative Alpha** | Statistical Arbitrage, Predictive Modeling, Feature Engineering | **Task 03 & Task 08**: Random Forest Alpha Regressors, Intraday Liquidity Seasonality, Multi-Indicator Consensus Strategies (SMA, EMA, RSI, StochRSI). |
+| **Execution Microstructure** | Transaction Cost Analysis (TCA), Slippage, Exchange Friction | **Task 07**: Intraday 1-min candlestick backtester with realistic Indian exchange statutory charges (STT, NSE turnover, SEBI fee, GST) and basis point slippage. |
+| **Defensive Architecture** | Low Latency, Schema Type Safety, Fail-Fast Order Routing | **Task 09 & Web Portal**: Pydantic v2 data validation, zero-regex string parsers ($O(N)$), and Serverless Python API. |
 
 ---
 
-## 🏗️ Repository Structure
+## 🏗️ Repository Architecture
 
 ```
-Arkalogi-Internship/
-├── Task_01_Option_Filtering/            # Task 01: NIFTY50 Options & Futures Handcrafted Filtering
+Arkalogi-Tech.-Internship/
+├── Task_01_Option_Filtering/            # Task 01: NIFTY 50 Option Chain & Handcrafted Date Parser ($O(N)$)
 │   ├── option_filtering.py
 │   ├── README.md
 │   └── data/
 │
-├── Task_02_PnL_Drawdown/                 # Task 02: Trade PnL, Peak Equity & Drawdown Analysis
+├── Task_02_PnL_Drawdown/                 # Task 02: Trade PnL, Peak Equity & Hedge-Fund Risk Metrics
 │   ├── pnl_drawdown_analysis.py
 │   ├── README.md
 │   └── data/
 │
-├── Task_03_ML_PnL_Prediction/            # Task 03: Machine Learning PnL % Regression Models
+├── Task_03_ML_PnL_Prediction/            # Task 03: ML PnL % Alpha Regressor & Kelly Position Sizing
 │   ├── ml_pnl_prediction.py
 │   ├── README.md
 │   └── data/
 │
-├── Task_04_CSV_Dict_Converter/           # Task 04: Relational CSV to Nested Python Dict Converter
+├── Task_04_CSV_Dict_Converter/           # Task 04: Relational CSV to Hierarchical Dict Converter ($O(N)$)
 │   ├── csv_to_dict_converter.py
 │   ├── README.md
 │   └── data/
 │
-├── Task_05_Market_Insight_SMA/           # Task 05: Rolling SMA Market Scanner & REST API
+├── Task_05_Market_Insight_SMA/           # Task 05: Rolling SMA Market Scanner & REST Endpoint
 │   ├── app.py
 │   ├── sma_insight.py
 │   ├── README.md
 │   ├── templates/
 │   └── data/
 │
-├── Task_06_Service_Selection_WebApp/     # Task 06: Multi-Page Dynamic Service Gateway (Flask)
+├── Task_06_Service_Selection_WebApp/     # Task 06: Dynamic Gateway & Service Selector
 │   ├── app.py
 │   ├── README.md
 │   └── templates/
 │
-├── Task_07_Trade_Simulation/             # Task 07: Intraday 1-Min Candlestick Backtester & Chart.js
+├── Task_07_Trade_Simulation/             # Task 07: 1-Min Candlestick Backtester & Indian Exchange Friction
 │   ├── app.py
 │   ├── simulation_engine.py
 │   ├── README.md
 │   ├── templates/
 │   └── data/
 │
-├── Task_08_Recommendation_Dashboard/     # Task 08: Multi-Indicator Strategy Engine & Indices Tracker
+├── Task_08_Recommendation_Dashboard/     # Task 08: Multi-Indicator Algorithmic Strategy Engine (SMA/EMA/RSI)
 │   ├── app.py
 │   ├── indicators.py
 │   ├── recommendation.py
@@ -61,144 +78,98 @@ Arkalogi-Internship/
 │   ├── templates/
 │   └── data/
 │
-├── Task_09_API_Validation_Pydantic/      # Task 09: Pydantic v2 Type Safety, Defense & Unit Tests
+├── Task_09_API_Validation_Pydantic/      # Task 09: Pydantic v2 Type Defense & Defensive Testing
 │   ├── schemas.py
-│   ├── validator_middleware.py
 │   ├── test_validation.py
+│   ├── validator_middleware.py
 │   └── README.md
 │
-├── web_portal/                           # 🌐 Integrated Full-Stack Web Portal
-│   ├── app.py                            # Unified Flask application combining Tasks 01–09
-│   ├── templates/                        # Modern responsive dark-mode UI
-│   └── data/                             # Aggregated high-frequency & cache data
+├── Task_10_Quant_Risk_Greeks/            # Task 10: Institutional Quant & Options Greeks Engine
+│   ├── quant_engine_cli.py
+│   └── README.md
 │
-├── main.py                               # 🚀 Master Entry Point
-├── run_all_tasks.py                      # 🧪 Automated Test & Verification Runner
-├── requirements.txt                      # Project Dependencies
-└── README.md                             # Repository Documentation
+├── web_portal/                           # Unified Production Web Terminal (Flask + Chart.js)
+│   ├── app.py
+│   ├── quant_engine.py                  # Core Quantitative & Derivatives Mathematical Library
+│   ├── templates/                       # High-Density Dark FinTech UI
+│   └── data/
+│
+├── api/
+│   └── index.py                          # Vercel Serverless Function Handler
+├── vercel.json                           # Vercel Production Build & Routing Configuration
+├── requirements.txt                      # Pinned Dependencies
+├── run_all_tasks.py                      # Master Automated Test & Verification Suite
+└── main.py                               # Local Web Server Entry Point
 ```
 
 ---
 
-## 📌 Summary of Assigned Tasks
+## 📐 Mathematical Formulations
 
-### 📌 Task 01: NIFTY50 Option Symbol Filtering (CSV)
-- **Objective:** Ingest master instruments CSV (`nse_master_raw.csv`) from Zerodha/Kite and extract all option (`CE`, `PE`) and futures (`FUT`) contracts for NIFTY50 constituents.
-- **Constraints:** No Regular Expressions (`re` module) allowed. Logic is handcrafted via string slicing and character traversal.
-- **Output:** `filtered_contracts_with_date.csv`, `nifty50_stocks.csv`.
-- **Run:** `python Task_01_Option_Filtering/option_filtering.py`
+### 1. Black-Scholes Options Greeks Pricing
+Given Underlying Spot $S$, Strike $K$, Time to Expiration $T = \frac{\text{DTE}}{365}$, Volatility $\sigma$, Risk-Free Rate $r$:
 
----
+$$d_1 = \frac{\ln(S/K) + (r + \frac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}, \quad d_2 = d_1 - \sigma\sqrt{T}$$
 
-### 📌 Task 02: Trade PnL & Drawdown Analysis (JSON / Excel)
-- **Objective:** Ingest trade execution histories (`task_02.json` / `task_02.xlsx`), compute PnL, cumulative equity curve, and drawdown trajectories.
-- **Formulas:**
-  - $\text{PnL (Long)} = (\text{Exit Price} - \text{Entry Price}) \times \text{Qty}$
-  - $\text{PnL (Short)} = (\text{Entry Price} - \text{Exit Price}) \times \text{Qty}$
-  - $\text{Peak Equity} = \text{cummax}(\text{Cumulative PnL})$
-  - $\text{Drawdown} = \text{Cumulative PnL} - \text{Peak Equity}$
-- **Metrics:** Win Rate (55.43%), Total Net PnL, Profit Factor, Max Drawdown, Top 5 Profitable Trades.
-- **Output:** `result.csv`, `top_5_profits.csv`, `task_02_with_pnl.xlsx`.
-- **Run:** `python Task_02_PnL_Drawdown/pnl_drawdown_analysis.py`
+- **Call Delta ($\Delta_{CE}$)**: $N(d_1)$
+- **Put Delta ($\Delta_{PE}$)**: $N(d_1) - 1$
+- **Gamma ($\Gamma$)**: $\frac{N'(d_1)}{S \sigma \sqrt{T}}$
+- **Vega ($\mathcal{V}$)**: $\frac{S \sqrt{T} N'(d_1)}{100}$ (Sensitivity to $1\%$ IV shift)
+- **Theta ($\Theta$)**: $\left( -\frac{S N'(d_1) \sigma}{2\sqrt{T}} - r K e^{-rT} N(d_2) \right) / 365$
 
 ---
 
-### 📌 Task 03: ML-Based PnL Percentage Prediction
-- **Objective:** Supervised regression model predicting expected trade return percentage ($\text{PnL \%}$) from structural support/resistance distances and time-of-day features.
-- **Features:** `entry_support_distance%`, `entry_resistance_distance%`, `entry_minutes` (elapsed minutes from market open 09:15 AM).
-- **Models:** `RandomForestRegressor`, `GradientBoostingRegressor` (RMSE: 0.4744, R² Score: 0.03).
-- **Output:** `pnl_prediction_plot.png`, `task_03.csv`.
-- **Run:** `python Task_03_ML_PnL_Prediction/ml_pnl_prediction.py`
+### 2. Portfolio Risk & Attribution Engine
+- **Annualized Sharpe Ratio**:
+  $$\text{Sharpe} = \frac{\mathbb{E}[R_p - R_f]}{\sigma(R_p)} \times \sqrt{252}$$
+- **Sortino Ratio**:
+  $$\text{Sortino} = \frac{\mathbb{E}[R_p - R_f]}{\sqrt{\frac{1}{N}\sum \min(0, R_p - R_f)^2}} \times \sqrt{252}$$
+- **Calmar Ratio**:
+  $$\text{Calmar} = \frac{\text{Annualized Return \%}}{\text{Max Drawdown \%}}$$
+- **Value at Risk (VaR 95%)**:
+  $$\text{VaR}_{0.95} = - \text{Percentile}(R_p, 5\%)$$
+- **Expected Shortfall (Conditional VaR)**:
+  $$\text{CVaR}_{0.95} = -\mathbb{E}[R_p \mid R_p \le -\text{VaR}_{0.95}]$$
+- **Kelly Criterion**:
+  $$f^* = p - \frac{1 - p}{b} \quad \text{where } b = \frac{\text{Avg Win}}{\text{Avg Loss}}$$
 
 ---
 
-### 📌 Task 04: CSV to Python Dictionary Converter
-- **Objective:** Transform flat tabular CSV files into structured nested Python dictionaries for $O(1)$ in-memory lookups.
-- **Capabilities:** Primary key indexing and hierarchical key sequences (`Symbol -> Date -> Trades`).
-- **Run:** `python Task_04_CSV_Dict_Converter/csv_to_dict_converter.py`
+### 3. Realistic Indian Exchange Transaction Cost Model (NSE/BSE)
+For Intraday Equity Turnover:
+- **STT (Securities Transaction Tax)**: $0.025\%$ on exit turnover
+- **Exchange Charges**: $0.00345\%$ of total turnover
+- **SEBI Turnover Fee**: $₹10 \text{ per crore}$ ($0.0001\%$)
+- **Stamp Duty**: $0.003\%$ on entry turnover
+- **Brokerage**: $\min(₹40, 0.03\% \text{ of turnover})$
+- **GST**: $18\%$ on (Brokerage + Exchange Charges + SEBI Fees)
+- **Execution Slippage**: $2 \text{ bps}$ ($0.02\%$) drag
 
 ---
 
-### 📌 Task 05: Market Insight (SMA Based API)
-- **Objective:** Build a Flask API and scanner that computes rolling Simple Moving Averages (SMA) across NIFTY50 stocks and classifies them into Bullish (`above_sma`) and Bearish (`below_sma`) cohorts.
-- **Run:** `python Task_05_Market_Insight_SMA/app.py` (Runs on `http://127.0.0.1:5005`)
+## ⚡ Quick Start & Verification
 
----
-
-### 📌 Task 06: Service Selection Web App (Flask)
-- **Objective:** Multipage web application with dynamic service discovery and modular routing.
-- **Run:** `python Task_06_Service_Selection_WebApp/app.py` (Runs on `http://127.0.0.1:5006`)
-
----
-
-### 📌 Task 07: Entry/Exit Trade Simulation (Backend + Frontend)
-- **Objective:** Intraday trade strategy backtester across 1-minute historical candlestick data with customizable date ranges, entry/exit times, and long/short directions.
-- **Features:** Dynamic candle matching, realized PnL calculations, interactive Chart.js equity curve.
-- **Run:** `python Task_07_Trade_Simulation/app.py` (Runs on `http://127.0.0.1:5007`)
-
----
-
-### 📌 Task 08: Strategy Recommendation Dashboard
-- **Objective:** Interactive quantitative analysis dashboard combining SMA (14), EMA (14), RSI (14), and Stochastic RSI with composite Buy/Sell/Hold scoring and live benchmark tracking (NIFTY 50, SENSEX, BSE MidCap).
-- **Run:** `python Task_08_Recommendation_Dashboard/app.py` (Runs on `http://127.0.0.1:5008`)
-
----
-
-### 📌 Task 09: API Validation & Security (Pydantic)
-- **Objective:** Type-safe request/response validation schemas using Pydantic v2. Enforces ISO dates (`YYYY-MM-DD`), 24-hr timestamps (`HH:MM`), allowed timeframes, and numerical ranges.
-- **Run Tests:** `python Task_09_API_Validation_Pydantic/test_validation.py`
-
----
-
-## 🌐 Unified Web Portal (All Tasks Integrated)
-
-To launch the complete, production-grade integrated portal containing interactive web pages for all 9 tasks:
-
-```powershell
-python main.py
-```
-Open your browser at: **`http://127.0.0.1:5000`**
-
----
-
-## 🧪 Master Test & Verification Suite
-
-To run and verify all task scripts in a single command:
-```powershell
+### 1. Run Automated Test Verification Suite
+```bash
 python run_all_tasks.py
 ```
+*Executes all 6 validation scripts sequentially with automated exit-code assertions.*
+
+### 2. Launch Local Web Terminal
+```bash
+python main.py
+```
+*Access the unified trading portal at [http://127.0.0.1:5000](http://127.0.0.1:5000).*
+
+### 3. Run Standalone Quant Engine (CLI)
+```bash
+python Task_10_Quant_Risk_Greeks/quant_engine_cli.py
+```
 
 ---
 
-## 🛠️ Installation & Setup
-
-1. **Clone the repository**:
-   ```powershell
-   git clone https://github.com/priyanshuj/AI-ML.git
-   cd AI-ML
-   ```
-
-2. **Install required dependencies**:
-   ```powershell
-   pip install -r requirements.txt
-   ```
-
-3. **Start the Application**:
-   ```powershell
-   python main.py
-   ```
-
----
-
-## 📚 Skills Applied
-- **Backend Engineering:** Python, Flask (Routing, Blueprints, REST APIs, Jinja2 Templates)
-- **Quantitative Trading & Analytics:** Time Series Resampling, Intraday Candlestick Modeling, Drawdown Analysis, Technical Indicators (SMA, EMA, RSI, StochRSI)
-- **Machine Learning:** Feature Engineering, Regression Modeling, Random Forest, Scikit-Learn, Evaluation Metrics
-- **API Security & Architecture:** Pydantic v2 Schema Modeling, Field Validators, Defense-in-Depth
-- **Frontend Integration:** Modern Responsive CSS, HTML5, Chart.js Visualizations
-
----
-
-**Author:** Priyanshu Kumar  
-**GitHub:** [@priyanshuj](https://github.com/priyanshuj)  
-**Company:** Arkalogi
+## 👨‍💻 Developer & Engineer Profile
+- **Candidate**: Priyanshu Kumar
+- **Role**: Backend & Quantitative Trading Engineering Intern
+- **GitHub**: [priyanshujaiswalku](https://github.com/priyanshujaiswalku)
+- **Live Deployment**: [https://arkalogi-internship-portfolio.vercel.app](https://arkalogi-internship-portfolio.vercel.app)

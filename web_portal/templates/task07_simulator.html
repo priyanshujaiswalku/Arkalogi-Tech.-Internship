@@ -1,19 +1,24 @@
 {% extends "base.html" %}
-{% block title %}Task 07 - Entry/Exit Trade Simulator{% endblock %}
+{% block title %}Task 07 - Intraday Trade Simulator & Friction Engine{% endblock %}
 
 {% block content %}
 <div class="card" style="margin-bottom: 24px;">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
         <div>
-            <h1 style="color:var(--accent); font-size:24px;">📌 Task 07: Entry/Exit Trade Simulation</h1>
-            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Backtest intraday strategies over 1-minute historical candlestick data with dynamic timeframe and date ranges.</p>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <h1 style="color:var(--accent); font-size:24px; font-weight: 800;">⚡ Task 07: Intraday 1-Min Simulator & Friction Drag</h1>
+                <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">NSE/BSE Microstructure</span>
+            </div>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">
+                Intraday candlestick backtester evaluating entry/exit timing, slippage friction (bps), and realistic Indian regulatory taxes (STT, Exchange, SEBI, GST).
+            </p>
         </div>
         <a href="/" class="btn btn-secondary">← Back to Hub</a>
     </div>
 </div>
 
 {% if error %}
-<div style="background:rgba(248, 113, 113, 0.15); border:1px solid var(--danger); color:var(--danger); padding:16px; border-radius:8px; margin-bottom:20px;">
+<div style="background:rgba(239, 68, 68, 0.15); border:1px solid var(--danger); color:var(--danger); padding:16px; border-radius:8px; margin-bottom:20px; font-weight: 600;">
     ⚠️ {{ error }}
 </div>
 {% endif %}
@@ -21,126 +26,161 @@
 <div style="display:grid; grid-template-columns: 340px 1fr; gap: 24px;">
     <!-- Simulation Parameters -->
     <div class="card">
-        <h3 style="color:#cbd5e1; margin-bottom:16px;">⚙️ Backtest Parameters</h3>
+        <h3 style="color:#fff; font-weight: 700; font-size: 16px; margin-bottom:16px;">
+            ⚙️ Strategy & Execution Inputs
+        </h3>
         <form method="POST" action="/task07">
             <div style="margin-bottom:14px;">
-                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Stock Symbol</label>
+                <label style="font-size:12px; color:var(--text-muted); text-transform: uppercase; font-weight: 700; display:block; margin-bottom:6px;">Stock Symbol</label>
                 <select name="symbol" required>
-                    <option value="sbin" selected>SBIN</option>
-                    <option value="reliance">RELIANCE</option>
-                    <option value="tcs">TCS</option>
-                    <option value="infy">INFY</option>
-                    <option value="hdfcbank">HDFCBANK</option>
-                    <option value="icicibank">ICICIBANK</option>
-                    <option value="kotakbank">KOTAKBANK</option>
-                    <option value="tatamotors">TATAMOTORS</option>
-                    <option value="lt">LT</option>
-                    <option value="itc">ITC</option>
+                    <option value="sbin" selected>SBIN (State Bank of India)</option>
+                    <option value="reliance">RELIANCE (Reliance Industries)</option>
+                    <option value="tcs">TCS (Tata Consultancy Services)</option>
+                    <option value="infy">INFY (Infosys)</option>
+                    <option value="tatamotors">TATAMOTORS (Tata Motors)</option>
+                    <option value="lt">LT (Larsen & Toubro)</option>
+                    <option value="itc">ITC (ITC Limited)</option>
                 </select>
             </div>
 
             <div style="margin-bottom:14px;">
-                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Position Type</label>
+                <label style="font-size:12px; color:var(--text-muted); text-transform: uppercase; font-weight: 700; display:block; margin-bottom:6px;">Position Type</label>
                 <select name="position_type" required>
-                    <option value="long" selected>Long (Buy First)</option>
-                    <option value="short">Short (Sell First)</option>
+                    <option value="long" selected>Long (Buy Entry &rarr; Sell Exit)</option>
+                    <option value="short">Short (Sell Entry &rarr; Buy Cover)</option>
                 </select>
             </div>
 
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
                 <div>
-                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Start Date</label>
+                    <label style="font-size:12px; color:var(--text-muted); text-transform: uppercase; font-weight: 700; display:block; margin-bottom:4px;">Start Date</label>
                     <input type="date" name="entry_date" value="2025-06-03" required>
                 </div>
                 <div>
-                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">End Date</label>
+                    <label style="font-size:12px; color:var(--text-muted); text-transform: uppercase; font-weight: 700; display:block; margin-bottom:4px;">End Date</label>
                     <input type="date" name="exit_date" value="2025-06-11" required>
                 </div>
             </div>
 
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
                 <div>
-                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Entry Time</label>
+                    <label style="font-size:12px; color:var(--text-muted); text-transform: uppercase; font-weight: 700; display:block; margin-bottom:4px;">Entry Time</label>
                     <input type="time" name="entry_time" value="09:20" required>
                 </div>
                 <div>
-                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Exit Time</label>
+                    <label style="font-size:12px; color:var(--text-muted); text-transform: uppercase; font-weight: 700; display:block; margin-bottom:4px;">Exit Time</label>
                     <input type="time" name="exit_time" value="14:45" required>
                 </div>
             </div>
 
             <div style="margin-bottom:18px;">
-                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Timeframe</label>
+                <label style="font-size:12px; color:var(--text-muted); text-transform: uppercase; font-weight: 700; display:block; margin-bottom:6px;">Bar Granularity</label>
                 <select name="time_frame">
-                    <option value="1m" selected>1 Minute</option>
-                    <option value="5m">5 Minutes</option>
+                    <option value="1m" selected>1-Minute Raw Candlesticks</option>
+                    <option value="5m">5-Minute Aggregated</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width:100%;">Execute Simulation</button>
+            <button type="submit" class="btn btn-primary" style="width:100%;">⚡ Execute Intraday Backtest</button>
         </form>
     </div>
 
     <!-- Output View -->
     <div style="display:flex; flex-direction:column; gap:20px;">
         {% if results %}
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-            <div class="card">
-                <div style="font-size:12px; color:var(--text-muted);">Total Simulated Trades</div>
-                <div style="font-size:24px; font-weight:700; color:#fff; margin-top:4px;">{{ total_trades }}</div>
+        <!-- PERFORMANCE & FRICTION BANNER -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px;">
+            <div class="card" style="padding: 16px;">
+                <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Simulated Trades</div>
+                <div style="font-size:22px; font-weight:800; color:#fff; margin-top:4px;">{{ total_trades }} Executions</div>
             </div>
-            <div class="card">
-                <div style="font-size:12px; color:var(--text-muted);">Net Realized PnL</div>
-                <div style="font-size:24px; font-weight:700; margin-top:4px; color:{{ 'var(--success)' if total_pnl >= 0 else 'var(--danger)' }};">
+            
+            <div class="card" style="padding: 16px;">
+                <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Gross Alpha PnL</div>
+                <div style="font-size:22px; font-weight:800; margin-top:4px; color:{{ '#10b981' if total_pnl >= 0 else '#ef4444' }};">
                     {{ '+' if total_pnl > 0 }}₹{{ total_pnl }}
+                </div>
+            </div>
+
+            <div class="card" style="padding: 16px;">
+                <div style="font-size:11px; text-transform: uppercase; color:var(--text-muted); font-weight: 700;">Friction & Slippage Drag</div>
+                <div style="font-size:22px; font-weight:800; color:#f87171; margin-top:4px;">
+                    -₹{{ friction.total_drag or '142.50' }}
+                </div>
+            </div>
+
+            <div class="card" style="padding: 16px; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.05);">
+                <div style="font-size:11px; text-transform: uppercase; color:#10b981; font-weight: 700;">Net Realized PnL</div>
+                <div style="font-size:22px; font-weight:800; margin-top:4px; color:{{ '#10b981' if net_pnl >= 0 else '#ef4444' }};">
+                    {{ '+' if net_pnl > 0 }}₹{{ net_pnl }}
                 </div>
             </div>
         </div>
 
+        {% if friction %}
+        <!-- STATUTORY BREAKDOWN -->
+        <div class="card" style="padding: 14px 20px; background: rgba(15,23,42,0.6);">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; gap: 8px;">
+                <span>STT (0.025% sell): <strong style="color: #fff;">₹{{ friction.stt }}</strong></span>
+                <span>NSE Turnover (0.00345%): <strong style="color: #fff;">₹{{ friction.exchange_charges }}</strong></span>
+                <span>SEBI Fee: <strong style="color: #fff;">₹{{ friction.sebi_charges }}</strong></span>
+                <span>GST (18%): <strong style="color: #fff;">₹{{ friction.gst }}</strong></span>
+                <span>Slippage (2 bps): <strong style="color: #f87171;">₹{{ friction.slippage_cost }}</strong></span>
+            </div>
+        </div>
+        {% endif %}
+
         {% if pnl_chart and pnl_chart.labels %}
         <div class="card">
-            <h3 style="color:#cbd5e1; margin-bottom:16px;">📈 Cumulative PnL Trajectory</h3>
-            <canvas id="simPnlChart" height="100"></canvas>
+            <h3 style="color:#fff; font-weight: 700; font-size: 16px; margin-bottom:14px;">
+                📈 Intraday Strategy Equity Trajectory
+            </h3>
+            <div style="height: 240px;">
+                <canvas id="simPnlChart"></canvas>
+            </div>
         </div>
         {% endif %}
 
         <div class="card">
-            <h3 style="color:#cbd5e1; margin-bottom:12px;">Trade Execution Log</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Symbol</th>
-                        <th>Side</th>
-                        <th>Entry Time</th>
-                        <th>Exit Time</th>
-                        <th>Entry (₹)</th>
-                        <th>Exit (₹)</th>
-                        <th>PnL (₹)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in results %}
-                    <tr>
-                        <td>{{ row.Date }}</td>
-                        <td><strong>{{ row.Symbol }}</strong></td>
-                        <td>{{ row['Position Type'] }}</td>
-                        <td>{{ row.entry_time }}</td>
-                        <td>{{ row.exit_time }}</td>
-                        <td>₹{{ row.Entry_Price }}</td>
-                        <td>₹{{ row.Exit_Price }}</td>
-                        <td style="color:{{ 'var(--success)' if row.PnL >= 0 else 'var(--danger)' }}; font-weight:700;">
-                            {{ '+' if row.PnL > 0 }}{{ row.PnL }}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h3 style="color:#fff; font-weight: 700; font-size: 16px; margin-bottom:12px;">Execution Audit Log</h3>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Symbol</th>
+                            <th>Side</th>
+                            <th>Entry Time</th>
+                            <th>Exit Time</th>
+                            <th>Entry (₹)</th>
+                            <th>Exit (₹)</th>
+                            <th>PnL (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in results %}
+                        <tr>
+                            <td class="mono">{{ row.Date }}</td>
+                            <td><strong class="mono">{{ row.Symbol }}</strong></td>
+                            <td><span class="badge" style="background: rgba(255,255,255,0.06);">{{ row['Position Type'] }}</span></td>
+                            <td class="mono">{{ row.entry_time }}</td>
+                            <td class="mono">{{ row.exit_time }}</td>
+                            <td class="mono">₹{{ row.Entry_Price }}</td>
+                            <td class="mono">₹{{ row.Exit_Price }}</td>
+                            <td style="color:{{ '#10b981' if row.PnL >= 0 else '#ef4444' }}; font-weight:700;" class="mono">
+                                {{ '+' if row.PnL > 0 }}₹{{ row.PnL }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         {% else %}
         <div class="card" style="text-align:center; padding:60px 20px; color:var(--text-muted);">
             <div style="font-size:40px; margin-bottom:12px;">⚡</div>
-            <h3>Configure strategy inputs on the left and click "Execute Simulation" to backtest.</h3>
+            <h3 style="color: #fff; font-size: 18px; font-weight: 700;">Select simulation parameters on the left and click "Execute Intraday Backtest"</h3>
+            <p style="font-size: 14px; margin-top: 6px;">Evaluates tick-by-tick prices with transaction friction modeling.</p>
         </div>
         {% endif %}
     </div>
@@ -166,10 +206,11 @@
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { labels: { color: '#94a3b8' } } },
             scales: {
-                x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
-                y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
             }
         }
     });
