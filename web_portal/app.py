@@ -45,7 +45,9 @@ from Task_09_API_Validation_Pydantic.schemas import (
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8')
 
-app = Flask(__name__)
+TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), 'templates')
+STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
+app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=STATIC_DIR)
 
 # Pre-train/Load ML model for Task 03 fast inference
 TASK3_CSV = os.path.join(ROOT_DIR, 'Task_03_ML_PnL_Prediction', 'data', 'task_03.csv')
