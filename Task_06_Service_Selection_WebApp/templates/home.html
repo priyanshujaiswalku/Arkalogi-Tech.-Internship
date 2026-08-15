@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arkalogi Financial Engineering Services</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
+        nav { background: #1e293b; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+        .logo { font-size: 20px; font-weight: 700; color: #38bdf8; text-decoration: none; }
+        .hero { text-align: center; padding: 60px 20px; max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 38px; margin-bottom: 16px; color: #f8fafc; }
+        p.subtitle { color: #94a3b8; font-size: 18px; margin-bottom: 40px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto 60px; padding: 0 20px; }
+        .card { background: #1e293b; border-radius: 12px; padding: 28px; border: 1px solid #334155; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; }
+        .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
+        .icon { font-size: 32px; margin-bottom: 16px; }
+        .card h2 { font-size: 20px; color: #f8fafc; margin-bottom: 12px; }
+        .card p { color: #94a3b8; font-size: 14px; line-height: 1.5; margin-bottom: 20px; }
+        .btn { display: inline-block; padding: 10px 18px; background: #2563eb; color: #fff; border-radius: 6px; font-weight: 600; font-size: 14px; text-align: center; }
+        footer { margin-top: auto; text-align: center; padding: 20px; color: #64748b; font-size: 13px; border-top: 1px solid #1e293b; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">💼 Arkalogi Analytics</a>
+        <span style="color:#94a3b8; font-size:14px;">Backend Internship – Priyanshu Kumar</span>
+    </nav>
+
+    <div class="hero">
+        <h1>Quantitative & Algorithmic Trading Suite</h1>
+        <p class="subtitle">Select a financial micro-service below to explore market analytics, algorithmic trade backtesting, strategy recommendation, and machine learning models.</p>
+    </div>
+
+    <div class="grid">
+        {% for service in services %}
+        <a href="{{ service.endpoint }}" class="card">
+            <div>
+                <div class="icon">{{ service.icon }}</div>
+                <h2>{{ service.title }}</h2>
+                <p>{{ service.desc }}</p>
+            </div>
+            <div class="btn">Launch Service →</div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <footer>
+        Arkalogi Internship Portfolio | Built with Flask, Pandas, Scikit-Learn & Chart.js
+    </footer>
+</body>
+</html>

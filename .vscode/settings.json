@@ -1,5 +1,15 @@
 {
     "python.analysis.extraPaths": [
-        "./Task6a/app"
+        ".",
+        "./web_portal",
+        "./Task_01_Option_Filtering",
+        "./Task_02_PnL_Drawdown",
+        "./Task_03_ML_PnL_Prediction",
+        "./Task_04_CSV_Dict_Converter",
+        "./Task_05_Market_Insight_SMA",
+        "./Task_06_Service_Selection_WebApp",
+        "./Task_07_Trade_Simulation",
+        "./Task_08_Recommendation_Dashboard",
+        "./Task_09_API_Validation_Pydantic"
     ]
 }

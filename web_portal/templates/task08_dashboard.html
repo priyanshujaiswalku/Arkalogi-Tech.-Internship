@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}Task 08 - Recommendation Dashboard{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 style="color:var(--accent); font-size:24px;">📌 Task 08: Multi-Indicator Strategy Recommendation Dashboard</h1>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Real-time technical indicators (SMA, EMA, RSI, StochRSI) with combined Buy/Sell/Hold signals & market indices monitoring.</p>
+        </div>
+        <a href="/" class="btn btn-secondary">← Back to Hub</a>
+    </div>
+</div>
+
+{% if error %}
+<div style="background:rgba(248, 113, 113, 0.15); border:1px solid var(--danger); color:var(--danger); padding:16px; border-radius:8px; margin-bottom:20px;">
+    ⚠️ {{ error }}
+</div>
+{% endif %}
+
+<div style="display:grid; grid-template-columns: 320px 1fr; gap: 24px;">
+    <!-- Controls -->
+    <div class="card">
+        <h3 style="color:#cbd5e1; margin-bottom:16px;">⚙️ Indicator Strategy Config</h3>
+        <form method="POST" action="/task08">
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Stock Symbol</label>
+                <select name="symbol">
+                    <option value="sbin" selected>SBIN</option>
+                    <option value="reliance">RELIANCE</option>
+                    <option value="tcs">TCS</option>
+                    <option value="infy">INFY</option>
+                    <option value="hdfcbank">HDFCBANK</option>
+                    <option value="icicibank">ICICIBANK</option>
+                    <option value="tatamotors">TATAMOTORS</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Candle Date</label>
+                <input type="date" name="date" value="{{ current_date or '2025-06-03' }}" required>
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Select Technical Indicators</label>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:#cbd5e1;"><input type="checkbox" name="indicators" value="SMA" checked> Simple Moving Avg (SMA 14)</label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:#cbd5e1;"><input type="checkbox" name="indicators" value="EMA" checked> Exponential Moving Avg (EMA 14)</label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:#cbd5e1;"><input type="checkbox" name="indicators" value="RSI" checked> Relative Strength Index (RSI 14)</label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:#cbd5e1;"><input type="checkbox" name="indicators" value="StochRSI" checked> Stochastic RSI</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;">Evaluate Signals</button>
+        </form>
+    </div>
+
+    <!-- Output View -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+        {% if recommendation %}
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase;">Composite AI Signal</div>
+                <div style="font-size:24px; font-weight:800; color:#fff; margin-top:4px;">{{ recommendation.Symbol }} @ ₹{{ recommendation.Price }}</div>
+                <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">
+                    RSI: <strong>{{ recommendation.RSI }}</strong> &bull; StochRSI: <strong>{{ recommendation.StochRSI }}</strong> &bull; SMA: <strong>{{ recommendation.SMA }}</strong>
+                </div>
+            </div>
+
+            <div style="text-align:right;">
+                <span style="display:inline-block; font-size:20px; font-weight:800; padding:8px 20px; border-radius:8px; text-transform:uppercase; 
+                    background: {{ 'rgba(74, 222, 128, 0.2)' if recommendation.Signal == 'Buy' else ('rgba(248, 113, 113, 0.2)' if recommendation.Signal == 'Sell' else 'rgba(250, 204, 21, 0.2)') }};
+                    color: {{ 'var(--success)' if recommendation.Signal == 'Buy' else ('var(--danger)' if recommendation.Signal == 'Sell' else 'var(--warning)') }};
+                    border: 1px solid {{ 'var(--success)' if recommendation.Signal == 'Buy' else ('var(--danger)' if recommendation.Signal == 'Sell' else 'var(--warning)') }};">
+                    {{ recommendation.Signal }}
+                </span>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:6px;">Confidence: {{ recommendation.Confidence }}%</div>
+                <div style="width:130px; height:8px; background:#334155; border-radius:4px; overflow:hidden; margin-top:6px;">
+                    <div style="height:100%; width:{{ recommendation.Confidence }}%; background:var(--accent);"></div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if chart_data %}
+        <div class="card">
+            <h3 style="color:#cbd5e1; margin-bottom:16px;">📈 Price & Technical Indicator Overlay</h3>
+            <canvas id="recChart" height="110"></canvas>
+        </div>
+        {% else %}
+        <div class="card" style="text-align:center; padding:60px 20px; color:var(--text-muted);">
+            <div style="font-size:40px; margin-bottom:12px;">📊</div>
+            <h3>Select a stock symbol & date to render technical charts and trade signals.</h3>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if chart_data %}
+<script>
+    const cData = {{ chart_data | tojson | safe }};
+    const ctx = document.getElementById('recChart').getContext('2d');
+    
+    const datasets = [{
+        label: 'Close Price (₹)',
+        data: cData.close,
+        borderColor: '#38bdf8',
+        borderWidth: 2,
+        tension: 0.1
+    }];
+
+    if (cData.sma.length > 0) {
+        datasets.push({
+            label: 'SMA 14',
+            data: cData.sma,
+            borderColor: '#f59e0b',
+            borderWidth: 1.5,
+            borderDash: [5, 5],
+            tension: 0.1
+        });
+    }
+
+    if (cData.ema.length > 0) {
+        datasets.push({
+            label: 'EMA 14',
+            data: cData.ema,
+            borderColor: '#ec4899',
+            borderWidth: 1.5,
+            tension: 0.1
+        });
+    }
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: cData.labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { labels: { color: '#94a3b8' } } },
+            scales: {
+                x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

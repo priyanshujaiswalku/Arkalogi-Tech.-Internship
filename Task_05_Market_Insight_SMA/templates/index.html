@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 05 - SMA Market Insight</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .card { background: #1e293b; border-radius: 12px; padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid #334155; }
+        h1 { font-size: 24px; margin-bottom: 8px; color: #38bdf8; text-align: center; }
+        p { color: #94a3b8; font-size: 14px; text-align: center; margin-bottom: 24px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #cbd5e1; }
+        input[type="number"] { width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 16px; outline: none; }
+        input[type="number"]:focus { border-color: #38bdf8; }
+        button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #1d4ed8; }
+        .stocks-list { margin-top: 20px; padding: 12px; background: #0f172a; border-radius: 8px; font-size: 12px; color: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>📊 Market Insight (SMA)</h1>
+        <p>Analyze top NIFTY50 equities relative to their Simple Moving Average.</p>
+        <form action="/market_insight" method="POST">
+            <div class="form-group">
+                <label for="sma_length">SMA Window Length (Days):</label>
+                <input type="number" id="sma_length" name="sma_length" value="14" min="2" max="200" required>
+            </div>
+            <button type="submit">Analyze Market Trend</button>
+        </form>
+        <div class="stocks-list">
+            <strong>Monitored Basket:</strong> {{ default_stocks | join(', ') }}
+        </div>
+    </div>
+</body>
+</html>

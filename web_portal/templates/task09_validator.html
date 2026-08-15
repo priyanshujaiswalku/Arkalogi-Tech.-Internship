@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Task 09 - API Validation Sandbox{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 style="color:var(--accent); font-size:24px;">📌 Task 09: API Validation & Security Sandbox</h1>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Test live Pydantic v2 schemas and validation guards for date formats, times, position types, and numerical ranges.</p>
+        </div>
+        <a href="/" class="btn btn-secondary">← Back to Hub</a>
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+    <!-- Interactive Schema Test -->
+    <div class="card">
+        <h3 style="color:#cbd5e1; margin-bottom:16px;">🧪 Interactive Validation Tester</h3>
+        <form method="POST" action="/task09">
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Schema Model</label>
+                <select name="schema_type" id="schema_type">
+                    <option value="simulation" selected>EntryExitSimulationRequest</option>
+                    <option value="sma">MarketInsightRequest</option>
+                    <option value="ml">MLPredictRequest</option>
+                </select>
+            </div>
+
+            <div id="sim_fields">
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Symbol (e.g. SBIN)</label>
+                    <input type="text" name="symbol" value="SBIN">
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Entry Date (YYYY-MM-DD)</label>
+                        <input type="text" name="entry_date" value="2025-06-03">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Exit Date (YYYY-MM-DD)</label>
+                        <input type="text" name="exit_date" value="2025-06-11">
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Entry Time (HH:MM)</label>
+                        <input type="text" name="entry_time" value="09:20">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Exit Time (HH:MM)</label>
+                        <input type="text" name="exit_time" value="14:45">
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Position Type</label>
+                        <input type="text" name="position_type" value="long">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Timeframe</label>
+                        <input type="text" name="time_frame" value="1m">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;">Validate Payload</button>
+        </form>
+    </div>
+
+    <!-- Validation Result Output -->
+    <div class="card">
+        <h3 style="color:#cbd5e1; margin-bottom:16px;">📋 Validation Inspector Result</h3>
+        {% if test_result %}
+            {% if test_result.status == 'SUCCESS' %}
+                <div style="background:rgba(74, 222, 128, 0.15); border:1px solid var(--success); color:var(--success); padding:16px; border-radius:8px; margin-bottom:16px;">
+                    <strong>✓ {{ test_result.message }}</strong>
+                </div>
+                <h4 style="color:#cbd5e1; font-size:13px; margin-bottom:8px;">Sanitized & Validated Model:</h4>
+                <pre style="background:var(--bg-input); padding:16px; border-radius:8px; border:1px solid var(--border); color:#38bdf8; font-family:monospace; font-size:13px;">{{ test_result.validated_data | tojson(indent=2) }}</pre>
+            {% else %}
+                <div style="background:rgba(248, 113, 113, 0.15); border:1px solid var(--danger); color:var(--danger); padding:16px; border-radius:8px; margin-bottom:16px;">
+                    <strong>✗ Validation Error Rejected:</strong>
+                    <p style="margin-top:6px; font-size:13px;">{{ test_result.message }}</p>
+                </div>
+            {% endif %}
+        {% else %}
+            <p style="color:var(--text-muted); font-size:14px;">
+                Submit any payload on the left to test Pydantic schema validation, strict regex patterns, and type checking in real time. Try entering invalid dates like <code>32-01-2025</code> or invalid times like <code>25:99</code> to observe defensive error rejection.
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

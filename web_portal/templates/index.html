@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Arkalogi Internship Portal - Priyanshu Kumar{% endblock %}
+
+{% block content %}
+<style>
+    .hero-section { text-align: center; padding: 30px 0 40px; }
+    .hero-title { font-size: 34px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .hero-desc { font-size: 16px; color: var(--text-muted); max-width: 800px; margin: 0 auto 30px; line-height: 1.6; }
+    
+    .indices-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
+    .index-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; display: flex; justify-content: space-between; align-items: center; }
+    .index-stat-name { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+    .index-stat-price { font-size: 20px; font-weight: 700; color: #fff; margin-top: 4px; }
+    .index-pill { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+    .pill-green { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+    .pill-red { background: rgba(248, 113, 113, 0.15); color: var(--danger); }
+
+    .tasks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+    .task-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, border-color 0.2s; }
+    .task-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+    .task-badge { display: inline-block; padding: 4px 10px; background: rgba(56, 189, 248, 0.1); color: var(--accent); border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+    .task-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .task-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
+    .task-tech { font-size: 12px; color: #64748b; margin-bottom: 16px; }
+</style>
+
+<div class="hero-section">
+    <h1 class="hero-title">💼 Arkalogi Backend & AI-ML Internship</h1>
+    <p class="hero-desc">
+        Welcome to my interactive internship portfolio. Below is the complete showcase of all 9 assigned quantitative analysis, financial engineering, machine learning, and backend architecture tasks.
+    </p>
+</div>
+
+<!-- Benchmark Market Bar -->
+{% if indices %}
+<div class="indices-grid">
+    {% for idx in indices %}
+    <div class="index-stat">
+        <div>
+            <div class="index-stat-name">{{ idx.name }}</div>
+            <div class="index-stat-price">₹{{ idx.price }}</div>
+        </div>
+        <div class="index-pill {{ 'pill-green' if idx.change_pct >= 0 else 'pill-red' }}">
+            {{ '+' if idx.change_pct > 0 }}{{ idx.change_pct }}%
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Tasks Matrix Grid -->
+<div class="tasks-grid">
+    <!-- Task 01 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 01</span>
+            <h3 class="task-title">📌 Option Symbol Filtering</h3>
+            <p class="task-desc">Filters Zerodha master instrument CSV for NIFTY50 options/futures using handcrafted string slicing (No Regex constraint).</p>
+            <div class="task-tech"><strong>Tech:</strong> Python, Pandas, Handcrafted String Slicing</div>
+        </div>
+        <a href="/task01" class="btn btn-primary">Open Task 01 Module →</a>
+    </div>
+
+    <!-- Task 02 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 02</span>
+            <h3 class="task-title">📌 Trade PnL & Drawdown Analysis</h3>
+            <p class="task-desc">Evaluates trade books from JSON/Excel, computes long/short PnL, equity peak, drawdowns, and top 5 profitable trades.</p>
+            <div class="task-tech"><strong>Tech:</strong> Python, Pandas, Cumulative Peak/Drawdown Analytics</div>
+        </div>
+        <a href="/task02" class="btn btn-primary">Open Task 02 Module →</a>
+    </div>
+
+    <!-- Task 03 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 03</span>
+            <h3 class="task-title">📌 ML PnL % Prediction</h3>
+            <p class="task-desc">Supervised ML regression predicting expected trade returns from support/resistance distances and time-of-day features.</p>
+            <div class="task-tech"><strong>Tech:</strong> Scikit-Learn, Random Forest, Regression Metrics</div>
+        </div>
+        <a href="/task03" class="btn btn-primary">Open Task 03 Module →</a>
+    </div>
+
+    <!-- Task 04 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 04</span>
+            <h3 class="task-title">📌 CSV to Python Dict Converter</h3>
+            <p class="task-desc">Converts CSV datasets into structured nested Python dictionaries with single-key indexing and hierarchical trees.</p>
+            <div class="task-tech"><strong>Tech:</strong> Python, CSV DictReader, JSON Serialization</div>
+        </div>
+        <a href="/task04" class="btn btn-primary">Open Task 04 Module →</a>
+    </div>
+
+    <!-- Task 05 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 05</span>
+            <h3 class="task-title">📌 Market Insight (SMA API)</h3>
+            <p class="task-desc">Scans NIFTY50 equities against rolling SMA windows, categorizing stocks into Above SMA vs Below SMA cohorts.</p>
+            <div class="task-tech"><strong>Tech:</strong> Flask, Pandas, Rolling SMA, REST API</div>
+        </div>
+        <a href="/task05" class="btn btn-primary">Open Task 05 Module →</a>
+    </div>
+
+    <!-- Task 06 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 06</span>
+            <h3 class="task-title">📌 Service Selection Web App</h3>
+            <p class="task-desc">Dynamic multi-page web application architecture utilizing modular Flask Blueprints and clean service discovery.</p>
+            <div class="task-tech"><strong>Tech:</strong> Flask Blueprints, Dynamic Routing, Jinja2</div>
+        </div>
+        <a href="/services" class="btn btn-primary">Open Task 06 Module →</a>
+    </div>
+
+    <!-- Task 07 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 07</span>
+            <h3 class="task-title">📌 Trade Entry/Exit Simulator</h3>
+            <p class="task-desc">Intraday trade backtester over 1-minute historical candlestick data with dynamic date range execution and Chart.js visualization.</p>
+            <div class="task-tech"><strong>Tech:</strong> Flask, Pandas, Chart.js, 1-Min Data Resampling</div>
+        </div>
+        <a href="/task07" class="btn btn-primary">Open Task 07 Module →</a>
+    </div>
+
+    <!-- Task 08 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 08</span>
+            <h3 class="task-title">📌 Strategy Recommendation Dashboard</h3>
+            <p class="task-desc">Multi-indicator technical dashboard (SMA, EMA, RSI, StochRSI) with automated Buy/Sell/Hold confidence scoring & live index feed.</p>
+            <div class="task-tech"><strong>Tech:</strong> Flask, Chart.js, Custom Indicator Engines</div>
+        </div>
+        <a href="/task08" class="btn btn-primary">Open Task 08 Module →</a>
+    </div>
+
+    <!-- Task 09 -->
+    <div class="task-card">
+        <div>
+            <span class="task-badge">Task 09</span>
+            <h3 class="task-title">📌 API Validation & Security</h3>
+            <p class="task-desc">Defensive API payload sanitization and constraint checking using Pydantic BaseModels with unit test verification.</p>
+            <div class="task-tech"><strong>Tech:</strong> Pydantic v2, Custom Validators, Type Safety</div>
+        </div>
+        <a href="/task09" class="btn btn-primary">Open Task 09 Module →</a>
+    </div>
+</div>
+{% endblock %}

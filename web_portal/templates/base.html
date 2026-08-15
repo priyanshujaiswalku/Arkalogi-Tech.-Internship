@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Arkalogi Internship Portfolio - Priyanshu Kumar{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-main: #0b1120;
+            --bg-card: #1e293b;
+            --bg-input: #0f172a;
+            --border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #4ade80;
+            --danger: #f87171;
+            --warning: #facc15;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Navigation */
+        nav { background: #0f172a; border-bottom: 1px solid var(--border); padding: 14px 28px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--accent); font-size: 18px; font-weight: 700; }
+        .nav-links { display: flex; gap: 16px; align-items: center; }
+        .nav-link { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+        .nav-link:hover, .nav-link.active { color: var(--accent); }
+        .badge-intern { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+        /* Content Container */
+        .content { flex: 1; max-width: 1240px; width: 100%; margin: 0 auto; padding: 32px 20px; }
+
+        /* Card Elements */
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        
+        /* Buttons & Inputs */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; border: none; transition: 0.2s ease; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-secondary { background: var(--border); color: var(--text-main); }
+        .btn-secondary:hover { background: #475569; }
+
+        input, select, textarea { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-input); color: #fff; font-size: 14px; outline: none; }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 8px; overflow: hidden; margin-top: 16px; }
+        th, td { padding: 12px 16px; text-align: left; font-size: 14px; border-bottom: 1px solid var(--border); }
+        th { background: #0f172a; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+
+        footer { background: #0f172a; border-top: 1px solid var(--border); text-align: center; padding: 20px; color: var(--text-muted); font-size: 13px; margin-top: auto; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <a href="/" class="nav-brand">
+            <span>💼</span> Arkalogi Internship Hub
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/task01" class="nav-link">Task 1: Options</a>
+            <a href="/task02" class="nav-link">Task 2: PnL & DD</a>
+            <a href="/task03" class="nav-link">Task 3: ML Predict</a>
+            <a href="/task04" class="nav-link">Task 4: Dict</a>
+            <a href="/task05" class="nav-link">Task 5: SMA</a>
+            <a href="/task07" class="nav-link">Task 7: Simulator</a>
+            <a href="/task08" class="nav-link">Task 8: Dashboard</a>
+            <a href="/task09" class="nav-link">Task 9: Validator</a>
+            <span class="badge-intern">Priyanshu Kumar</span>
+        </div>
+    </nav>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        Arkalogi Quantitative Analytics Platform &bull; Engineered by Priyanshu Kumar &bull; <a href="https://github.com/priyanshuj" target="_blank">GitHub Profile</a>
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}Task 07 - Entry/Exit Trade Simulator{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 style="color:var(--accent); font-size:24px;">📌 Task 07: Entry/Exit Trade Simulation</h1>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Backtest intraday strategies over 1-minute historical candlestick data with dynamic timeframe and date ranges.</p>
+        </div>
+        <a href="/" class="btn btn-secondary">← Back to Hub</a>
+    </div>
+</div>
+
+{% if error %}
+<div style="background:rgba(248, 113, 113, 0.15); border:1px solid var(--danger); color:var(--danger); padding:16px; border-radius:8px; margin-bottom:20px;">
+    ⚠️ {{ error }}
+</div>
+{% endif %}
+
+<div style="display:grid; grid-template-columns: 340px 1fr; gap: 24px;">
+    <!-- Simulation Parameters -->
+    <div class="card">
+        <h3 style="color:#cbd5e1; margin-bottom:16px;">⚙️ Backtest Parameters</h3>
+        <form method="POST" action="/task07">
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Stock Symbol</label>
+                <select name="symbol" required>
+                    <option value="sbin" selected>SBIN</option>
+                    <option value="reliance">RELIANCE</option>
+                    <option value="tcs">TCS</option>
+                    <option value="infy">INFY</option>
+                    <option value="hdfcbank">HDFCBANK</option>
+                    <option value="icicibank">ICICIBANK</option>
+                    <option value="kotakbank">KOTAKBANK</option>
+                    <option value="tatamotors">TATAMOTORS</option>
+                    <option value="lt">LT</option>
+                    <option value="itc">ITC</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Position Type</label>
+                <select name="position_type" required>
+                    <option value="long" selected>Long (Buy First)</option>
+                    <option value="short">Short (Sell First)</option>
+                </select>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+                <div>
+                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Start Date</label>
+                    <input type="date" name="entry_date" value="2025-06-03" required>
+                </div>
+                <div>
+                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">End Date</label>
+                    <input type="date" name="exit_date" value="2025-06-11" required>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+                <div>
+                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Entry Time</label>
+                    <input type="time" name="entry_time" value="09:20" required>
+                </div>
+                <div>
+                    <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Exit Time</label>
+                    <input type="time" name="exit_time" value="14:45" required>
+                </div>
+            </div>
+
+            <div style="margin-bottom:18px;">
+                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">Timeframe</label>
+                <select name="time_frame">
+                    <option value="1m" selected>1 Minute</option>
+                    <option value="5m">5 Minutes</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;">Execute Simulation</button>
+        </form>
+    </div>
+
+    <!-- Output View -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+        {% if results %}
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="card">
+                <div style="font-size:12px; color:var(--text-muted);">Total Simulated Trades</div>
+                <div style="font-size:24px; font-weight:700; color:#fff; margin-top:4px;">{{ total_trades }}</div>
+            </div>
+            <div class="card">
+                <div style="font-size:12px; color:var(--text-muted);">Net Realized PnL</div>
+                <div style="font-size:24px; font-weight:700; margin-top:4px; color:{{ 'var(--success)' if total_pnl >= 0 else 'var(--danger)' }};">
+                    {{ '+' if total_pnl > 0 }}₹{{ total_pnl }}
+                </div>
+            </div>
+        </div>
+
+        {% if pnl_chart and pnl_chart.labels %}
+        <div class="card">
+            <h3 style="color:#cbd5e1; margin-bottom:16px;">📈 Cumulative PnL Trajectory</h3>
+            <canvas id="simPnlChart" height="100"></canvas>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <h3 style="color:#cbd5e1; margin-bottom:12px;">Trade Execution Log</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Symbol</th>
+                        <th>Side</th>
+                        <th>Entry Time</th>
+                        <th>Exit Time</th>
+                        <th>Entry (₹)</th>
+                        <th>Exit (₹)</th>
+                        <th>PnL (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in results %}
+                    <tr>
+                        <td>{{ row.Date }}</td>
+                        <td><strong>{{ row.Symbol }}</strong></td>
+                        <td>{{ row['Position Type'] }}</td>
+                        <td>{{ row.entry_time }}</td>
+                        <td>{{ row.exit_time }}</td>
+                        <td>₹{{ row.Entry_Price }}</td>
+                        <td>₹{{ row.Exit_Price }}</td>
+                        <td style="color:{{ 'var(--success)' if row.PnL >= 0 else 'var(--danger)' }}; font-weight:700;">
+                            {{ '+' if row.PnL > 0 }}{{ row.PnL }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="card" style="text-align:center; padding:60px 20px; color:var(--text-muted);">
+            <div style="font-size:40px; margin-bottom:12px;">⚡</div>
+            <h3>Configure strategy inputs on the left and click "Execute Simulation" to backtest.</h3>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if pnl_chart and pnl_chart.labels %}
+<script>
+    const simData = {{ pnl_chart | tojson | safe }};
+    const ctx = document.getElementById('simPnlChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: simData.labels,
+            datasets: [{
+                label: 'Cumulative PnL (₹)',
+                data: simData.cumulative_pnl,
+                borderColor: '#38bdf8',
+                backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { labels: { color: '#94a3b8' } } },
+            scales: {
+                x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

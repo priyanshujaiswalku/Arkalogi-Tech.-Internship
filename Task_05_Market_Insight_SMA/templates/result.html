@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 05 - SMA Market Insight Results</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background: #0f172a; color: #f8fafc; min-height: 100vh; padding: 40px 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 840px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        h1 { color: #38bdf8; font-size: 24px; }
+        .back-btn { text-decoration: none; padding: 8px 16px; background: #334155; color: #fff; border-radius: 6px; font-size: 14px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .box { background: #1e293b; border-radius: 10px; padding: 20px; border: 1px solid #334155; }
+        .box.bullish { border-top: 4px solid #22c55e; }
+        .box.bearish { border-top: 4px solid #ef4444; }
+        .box h2 { font-size: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .box.bullish h2 { color: #22c55e; }
+        .box.bearish h2 { color: #ef4444; }
+        .badge-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .badge { padding: 6px 12px; border-radius: 6px; font-weight: 600; font-size: 14px; }
+        .badge.green { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .badge.red { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px 16px; text-align: left; font-size: 14px; border-bottom: 1px solid #334155; }
+        th { background: #0f172a; color: #94a3b8; font-weight: 600; }
+        .status-up { color: #4ade80; font-weight: 600; }
+        .status-down { color: #f87171; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📈 SMA Market Insight Results</h1>
+                <p style="color:#94a3b8; font-size:14px;">SMA Window: {{ result.sma_length }} Periods</p>
+            </div>
+            <a href="/" class="back-btn">← Back to Form</a>
+        </div>
+
+        <div class="grid">
+            <div class="box bullish">
+                <h2>🟢 Bullish (Above SMA-{{ result.sma_length }}) [{{ result.above_sma|length }}]</h2>
+                <div class="badge-list">
+                    {% for stock in result.above_sma %}
+                        <span class="badge green">{{ stock }}</span>
+                    {% else %}
+                        <span style="color:#64748b; font-size:13px;">No stocks above SMA</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="box bearish">
+                <h2>🔴 Bearish (Below SMA-{{ result.sma_length }}) [{{ result.below_sma|length }}]</h2>
+                <div class="badge-list">
+                    {% for stock in result.below_sma %}
+                        <span class="badge red">{{ stock }}</span>
+                    {% else %}
+                        <span style="color:#64748b; font-size:13px;">No stocks below SMA</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-bottom: 12px; color: #cbd5e1;">Detailed Equities Breakdown</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Latest Close (₹)</th>
+                    <th>SMA-{{ result.sma_length }} (₹)</th>
+                    <th>Distance (%)</th>
+                    <th>Trend State</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in result.details %}
+                <tr>
+                    <td><strong>{{ row.symbol }}</strong></td>
+                    <td>{{ row.close }}</td>
+                    <td>{{ row.sma }}</td>
+                    <td class="{{ 'status-up' if row.diff_pct >= 0 else 'status-down' }}">
+                        {{ '+' if row.diff_pct > 0 }}{{ row.diff_pct }}%
+                    </td>
+                    <td class="{{ 'status-up' if row.status == 'ABOVE' else 'status-down' }}">
+                        {{ row.status }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

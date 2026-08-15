@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 08 - Strategy Recommendation Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background: #0f172a; color: #f8fafc; min-height: 100vh; padding: 24px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        /* Indices Banner */
+        .indices-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .index-card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .index-name { font-size: 13px; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+        .index-price { font-size: 20px; font-weight: 700; margin-top: 4px; }
+        .index-change { font-size: 13px; font-weight: 600; padding: 4px 8px; border-radius: 4px; }
+        .pos { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .neg { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+        /* Main Layout */
+        .main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 24px; }
+        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+        .control-panel { background: #1e293b; border-radius: 12px; padding: 24px; border: 1px solid #334155; }
+        .control-panel h2 { font-size: 18px; margin-bottom: 16px; color: #38bdf8; }
+        
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #cbd5e1; }
+        input, select { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 14px; outline: none; }
+        
+        .checkbox-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #cbd5e1; cursor: pointer; }
+        .checkbox-item input { width: auto; }
+
+        button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
+        button:hover { background: #1d4ed8; }
+
+        /* Output Column */
+        .output-panel { display: flex; flex-direction: column; gap: 24px; }
+        
+        .signal-card { background: #1e293b; border-radius: 12px; padding: 24px; border: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+        .signal-badge { font-size: 24px; font-weight: 800; padding: 10px 24px; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .signal-buy { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+        .signal-sell { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+        .signal-hold { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid #eab308; }
+
+        .confidence-meter { text-align: right; }
+        .meter-bar { width: 140px; height: 10px; background: #334155; border-radius: 5px; overflow: hidden; margin-top: 6px; }
+        .meter-fill { height: 100%; background: #38bdf8; }
+
+        .chart-card { background: #1e293b; border-radius: 12px; padding: 24px; border: 1px solid #334155; }
+        .error-box { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; padding: 16px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Market Indices Banner -->
+        {% if indices %}
+        <div class="indices-row">
+            {% for idx in indices %}
+            <div class="index-card">
+                <div>
+                    <div class="index-name">{{ idx.name }}</div>
+                    <div class="index-price">₹{{ idx.price }}</div>
+                </div>
+                <div class="index-change {{ 'pos' if idx.change_pct >= 0 else 'neg' }}">
+                    {{ '+' if idx.change_pct > 0 }}{{ idx.change_pct }}%
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <div class="main-grid">
+            <!-- Sidebar Controls -->
+            <div class="control-panel">
+                <h2>⚙️ Strategy Config</h2>
+                <form method="POST" action="/dashboard">
+                    <div class="form-group">
+                        <label for="symbol">Equity Symbol:</label>
+                        <select name="symbol" id="symbol">
+                            <option value="sbin" {% if current_symbol == 'SBIN' %}selected{% endif %}>SBIN (State Bank)</option>
+                            <option value="reliance" {% if current_symbol == 'RELIANCE' %}selected{% endif %}>RELIANCE</option>
+                            <option value="tcs" {% if current_symbol == 'TCS' %}selected{% endif %}>TCS</option>
+                            <option value="infy" {% if current_symbol == 'INFY' %}selected{% endif %}>INFY</option>
+                            <option value="hdfcbank" {% if current_symbol == 'HDFCBANK' %}selected{% endif %}>HDFCBANK</option>
+                            <option value="icicibank" {% if current_symbol == 'ICICIBANK' %}selected{% endif %}>ICICIBANK</option>
+                            <option value="kotakbank" {% if current_symbol == 'KOTAKBANK' %}selected{% endif %}>KOTAKBANK</option>
+                            <option value="tatamotors" {% if current_symbol == 'TATAMOTORS' %}selected{% endif %}>TATAMOTORS</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" value="{{ current_date or '2025-06-03' }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Technical Indicators:</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item"><input type="checkbox" name="indicators" value="SMA" checked> Simple Moving Avg (SMA 14)</label>
+                            <label class="checkbox-item"><input type="checkbox" name="indicators" value="EMA" checked> Exponential Moving Avg (EMA 14)</label>
+                            <label class="checkbox-item"><input type="checkbox" name="indicators" value="RSI" checked> Relative Strength Index (RSI 14)</label>
+                            <label class="checkbox-item"><input type="checkbox" name="indicators" value="StochRSI" checked> Stochastic RSI</label>
+                        </div>
+                    </div>
+
+                    <button type="submit">Run Strategy Signals</button>
+                </form>
+            </div>
+
+            <!-- Output Visuals -->
+            <div class="output-panel">
+                {% if recommendation %}
+                <div class="signal-card">
+                    <div>
+                        <div style="font-size:13px; color:#94a3b8; text-transform:uppercase;">Composite AI Signal</div>
+                        <div style="font-size:24px; font-weight:700; margin:4px 0;">{{ recommendation.Symbol }} @ ₹{{ recommendation.Price }}</div>
+                        <div style="font-size:13px; color:#64748b;">RSI: {{ recommendation.RSI }} | StochRSI: {{ recommendation.StochRSI }} | SMA: {{ recommendation.SMA }}</div>
+                    </div>
+                    <div class="confidence-meter">
+                        <span class="signal-badge {{ 'signal-buy' if recommendation.Signal == 'Buy' else ('signal-sell' if recommendation.Signal == 'Sell' else 'signal-hold') }}">
+                            {{ recommendation.Signal }}
+                        </span>
+                        <div style="font-size:12px; color:#94a3b8; margin-top:8px;">Confidence: {{ recommendation.Confidence }}%</div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" style="width: {{ recommendation.Confidence }}%;"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if chart_data %}
+                <div class="chart-card">
+                    <h3 style="margin-bottom:16px; color:#cbd5e1;">📈 Technical Indicator Chart Overlay</h3>
+                    <canvas id="strategyChart" height="120"></canvas>
+                </div>
+                {% else %}
+                <div class="chart-card" style="text-align:center; padding: 60px 20px; color:#64748b;">
+                    <div style="font-size:40px; margin-bottom:12px;">📊</div>
+                    <h3>Configure your stock symbol & parameters to render the technical strategy dashboard.</h3>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if chart_data %}
+    <script>
+        const chartData = {{ chart_data | tojson | safe }};
+        const ctx = document.getElementById('strategyChart').getContext('2d');
+        
+        const datasets = [{
+            label: 'Close Price (₹)',
+            data: chartData.close,
+            borderColor: '#38bdf8',
+            borderWidth: 2,
+            tension: 0.1
+        }];
+
+        if (chartData.sma.length > 0) {
+            datasets.push({
+                label: 'SMA 14',
+                data: chartData.sma,
+                borderColor: '#f59e0b',
+                borderWidth: 1.5,
+                borderDash: [5, 5],
+                tension: 0.1
+            });
+        }
+
+        if (chartData.ema.length > 0) {
+            datasets.push({
+                label: 'EMA 14',
+                data: chartData.ema,
+                borderColor: '#ec4899',
+                borderWidth: 1.5,
+                tension: 0.1
+            });
+        }
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { labels: { color: '#94a3b8' } } },
+                scales: {
+                    x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                    y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

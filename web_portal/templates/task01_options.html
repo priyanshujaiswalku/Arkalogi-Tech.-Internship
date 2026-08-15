@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Task 01 - NIFTY50 Option Symbol Filtering{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 style="color:var(--accent); font-size:24px;">📌 Task 01: NIFTY50 Option Symbol Filtering</h1>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Handcrafted string slicing without Regular Expressions to filter NFO contracts and extract expiry.</p>
+        </div>
+        <a href="/" class="btn btn-secondary">← Back to Hub</a>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:20px;">
+        <div style="background:var(--bg-input); padding:16px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:12px; color:var(--text-muted);">Total NFO Contracts Processed</div>
+            <div style="font-size:22px; font-weight:700; color:#fff; margin-top:4px;">38,349 Contracts</div>
+        </div>
+        <div style="background:var(--bg-input); padding:16px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:12px; color:var(--text-muted);">NIFTY 50 Equities Tracked</div>
+            <div style="font-size:22px; font-weight:700; color:#fff; margin-top:4px;">{{ total_stocks or '49' }} Equities</div>
+        </div>
+        <div style="background:var(--bg-input); padding:16px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:12px; color:var(--text-muted);">Constraint</div>
+            <div style="font-size:18px; font-weight:700; color:var(--success); margin-top:6px;">No Regex / Handcrafted</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="color:#cbd5e1; margin-bottom:12px;">Processed NFO Instruments Sample (First 50 Rows)</h3>
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Trading Symbol</th>
+                    <th>Extracted Expiry Date</th>
+                    <th>Instrument Type</th>
+                    <th>Strike</th>
+                    <th>Exchange</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in contracts %}
+                <tr>
+                    <td><strong>{{ row.tradingsymbol }}</strong></td>
+                    <td style="color:var(--accent); font-weight:600;">{{ row.date or row.expiry_date_extracted or 'N/A' }}</td>
+                    <td>{{ row.instrument_type or 'OPT' }}</td>
+                    <td>{{ row.strike or '-' }}</td>
+                    <td>{{ row.exchange or 'NFO' }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No records loaded.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

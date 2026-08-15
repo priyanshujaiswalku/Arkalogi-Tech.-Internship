@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Task 04 - CSV to Dict Converter{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 style="color:var(--accent); font-size:24px;">📌 Task 04: CSV to Python Dictionary Converter</h1>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Converts flat tabular CSV data into structured, nested Python dictionary maps for fast in-memory indexing.</p>
+        </div>
+        <a href="/" class="btn btn-secondary">← Back to Hub</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="color:#cbd5e1; margin-bottom:12px;">Transformed In-Memory Python Dictionary Representation</h3>
+    <pre style="background:var(--bg-input); padding:20px; border-radius:8px; border:1px solid var(--border); color:#38bdf8; font-family:monospace; font-size:13px; max-height:450px; overflow-y:auto;">{{ data_dict | tojson(indent=4) }}</pre>
+</div>
+{% endblock %}

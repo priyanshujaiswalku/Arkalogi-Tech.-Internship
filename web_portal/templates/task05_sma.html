@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Task 05 - SMA Market Insight{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 style="color:var(--accent); font-size:24px;">📌 Task 05: Market Insight (SMA Based API)</h1>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Filter top NIFTY50 equities by Simple Moving Average trend strength.</p>
+        </div>
+        <a href="/" class="btn btn-secondary">← Back to Hub</a>
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns: 320px 1fr; gap: 24px;">
+    <!-- Configuration -->
+    <div class="card">
+        <h3 style="color:#cbd5e1; margin-bottom:16px;">⚙️ SMA Configuration</h3>
+        <form method="POST" action="/task05">
+            <div style="margin-bottom:16px;">
+                <label style="font-size:13px; color:var(--text-muted); display:block; margin-bottom:6px;">SMA Period (Days)</label>
+                <input type="number" name="sma_length" value="{{ sma_length }}" min="2" max="200" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Run SMA Scan</button>
+        </form>
+    </div>
+
+    <!-- Results Overview -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="card" style="border-top: 4px solid var(--success);">
+                <h3 style="color:var(--success); font-size:16px; margin-bottom:12px;">🟢 Above SMA-{{ result.sma_length }} (Bullish) [{{ result.above_sma|length }}]</h3>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    {% for s in result.above_sma %}
+                        <span style="background:rgba(74, 222, 128, 0.15); color:var(--success); padding:4px 10px; border-radius:6px; font-weight:600; font-size:13px;">{{ s }}</span>
+                    {% else %}
+                        <span style="color:var(--text-muted); font-size:13px;">No stocks above SMA</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card" style="border-top: 4px solid var(--danger);">
+                <h3 style="color:var(--danger); font-size:16px; margin-bottom:12px;">🔴 Below SMA-{{ result.sma_length }} (Bearish) [{{ result.below_sma|length }}]</h3>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    {% for s in result.below_sma %}
+                        <span style="background:rgba(248, 113, 113, 0.15); color:var(--danger); padding:4px 10px; border-radius:6px; font-weight:600; font-size:13px;">{{ s }}</span>
+                    {% else %}
+                        <span style="color:var(--text-muted); font-size:13px;">No stocks below SMA</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color:#cbd5e1; margin-bottom:12px;">Detailed Basket Quotes</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Close (₹)</th>
+                        <th>SMA (₹)</th>
+                        <th>Distance (%)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in result.details %}
+                    <tr>
+                        <td><strong>{{ row.symbol }}</strong></td>
+                        <td>₹{{ row.close }}</td>
+                        <td>₹{{ row.sma }}</td>
+                        <td style="color:{{ 'var(--success)' if row.diff_pct >= 0 else 'var(--danger)' }}; font-weight:600;">
+                            {{ '+' if row.diff_pct > 0 }}{{ row.diff_pct }}%
+                        </td>
+                        <td style="color:{{ 'var(--success)' if row.status == 'ABOVE' else 'var(--danger)' }}; font-weight:600;">
+                            {{ row.status }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

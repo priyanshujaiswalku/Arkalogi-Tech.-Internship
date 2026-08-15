@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Task 06 - Service Gateway{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 style="color:var(--accent); font-size:24px;">📌 Task 06: Service Selection Architecture</h1>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Dynamic routing architecture demonstrating Flask Blueprints and microservice navigation.</p>
+        </div>
+        <a href="/" class="btn btn-secondary">← Back to Hub</a>
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+    <div class="card">
+        <div style="font-size:32px; margin-bottom:12px;">📊</div>
+        <h3 style="color:#fff; margin-bottom:8px;">Market Insight Engine</h3>
+        <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">SMA filter across top NIFTY50 equities.</p>
+        <a href="/task05" class="btn btn-primary">Launch Service →</a>
+    </div>
+
+    <div class="card">
+        <div style="font-size:32px; margin-bottom:12px;">⚡</div>
+        <h3 style="color:#fff; margin-bottom:8px;">Trade Simulator</h3>
+        <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">Backtest intraday strategies over historical 1-minute data.</p>
+        <a href="/task07" class="btn btn-primary">Launch Service →</a>
+    </div>
+
+    <div class="card">
+        <div style="font-size:32px; margin-bottom:12px;">🎯</div>
+        <h3 style="color:#fff; margin-bottom:8px;">Recommendation Dashboard</h3>
+        <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">Multi-indicator strategy scoring and index monitoring.</p>
+        <a href="/task08" class="btn btn-primary">Launch Service →</a>
+    </div>
+
+    <div class="card">
+        <div style="font-size:32px; margin-bottom:12px;">🤖</div>
+        <h3 style="color:#fff; margin-bottom:8px;">ML PnL Predictor</h3>
+        <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">Random Forest model predicting trade return %.</p>
+        <a href="/task03" class="btn btn-primary">Launch Service →</a>
+    </div>
+</div>
+{% endblock %}

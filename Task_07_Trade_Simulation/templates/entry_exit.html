@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 07 - Trade Simulation Engine</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
+        .card { background: #1e293b; border-radius: 12px; padding: 32px; width: 100%; max-width: 540px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid #334155; }
+        h1 { font-size: 24px; margin-bottom: 8px; color: #38bdf8; text-align: center; }
+        p { color: #94a3b8; font-size: 14px; text-align: center; margin-bottom: 24px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #cbd5e1; }
+        input, select { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 15px; outline: none; }
+        input:focus, select:focus { border-color: #38bdf8; }
+        button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
+        button:hover { background: #1d4ed8; }
+        .hint { font-size: 12px; color: #64748b; margin-top: 16px; line-height: 1.4; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>⚡ Intraday Trade Simulator</h1>
+        <p>Backtest long or short strategies across 1-minute historical equity data.</p>
+        
+        <form method="POST" action="/entry_exit">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="symbol">Stock Symbol:</label>
+                    <select name="symbol" id="symbol" required>
+                        <option value="sbin" selected>SBIN</option>
+                        <option value="reliance">RELIANCE</option>
+                        <option value="tcs">TCS</option>
+                        <option value="infy">INFY</option>
+                        <option value="hdfcbank">HDFCBANK</option>
+                        <option value="icicibank">ICICIBANK</option>
+                        <option value="kotakbank">KOTAKBANK</option>
+                        <option value="tatamotors">TATAMOTORS</option>
+                        <option value="lt">LT</option>
+                        <option value="itc">ITC</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="position_type">Position Type:</label>
+                    <select name="position_type" id="position_type" required>
+                        <option value="long" selected>Long (Buy First)</option>
+                        <option value="short">Short (Sell First)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="entry_date">Start Date:</label>
+                    <input type="date" id="entry_date" name="entry_date" value="2025-06-03" required>
+                </div>
+                <div class="form-group">
+                    <label for="exit_date">End Date:</label>
+                    <input type="date" id="exit_date" name="exit_date" value="2025-06-11" required>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="entry_time">Entry Time (HH:MM):</label>
+                    <input type="time" id="entry_time" name="entry_time" value="09:20" required>
+                </div>
+                <div class="form-group">
+                    <label for="exit_time">Exit Time (HH:MM):</label>
+                    <input type="time" id="exit_time" name="exit_time" value="14:45" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="time_frame">Timeframe Resolution:</label>
+                <select name="time_frame" id="time_frame">
+                    <option value="1m" selected>1 Minute</option>
+                    <option value="5m">5 Minutes</option>
+                    <option value="15m">15 Minutes</option>
+                </select>
+            </div>
+
+            <button type="submit">Run Strategy Simulation</button>
+        </form>
+
+        <div class="hint">
+            💡 Sample test dataset covers June 2025 (e.g. 2025-06-03 to 2025-06-11) across NIFTY50 symbols.
+        </div>
+    </div>
+</body>
+</html>
