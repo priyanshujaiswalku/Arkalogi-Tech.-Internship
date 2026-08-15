@@ -1,5 +1,10 @@
 # 💼 Arkalogi Internship – Priyanshu Kumar
 
+[![Live Demo on Vercel](https://img.shields.io/badge/Live%20Demo-Vercel%20Deployment-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://arkalogi-internship-portfolio.vercel.app)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/priyanshujaiswalku/Arkalogi-Tech.-Internship)
+
+🌐 **Live Web Application**: [https://arkalogi-internship-portfolio.vercel.app](https://arkalogi-internship-portfolio.vercel.app)
+
 Welcome! This repository documents my backend & AI/ML engineering internship journey at **Arkalogi**. Below is a comprehensive overview of the architecture, tasks assigned, technical approach, mathematical formulations, and instructions for running individual modules or the unified web portal.
 
 ---
