@@ -1,0 +1,13 @@
+{
+  "name": "arkalogi-quant-internship-portfolio",
+  "version": "1.0.0",
+  "description": "Arkalogi Quantitative Analytics & Algorithmic Trading Platform - Priyanshu Kumar",
+  "scripts": {
+    "dev": "python main.py",
+    "start": "python main.py",
+    "test": "python run_all_tasks.py",
+    "quant": "python Task_10_Quant_Risk_Greeks/quant_engine_cli.py"
+  },
+  "author": "Priyanshu Kumar",
+  "license": "MIT"
+}
